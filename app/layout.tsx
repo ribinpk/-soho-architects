@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import Script from "next/script";
 import { JsonLd } from "@/components/seo/JsonLd";
 import "./globals.css";
 
@@ -36,8 +37,34 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f5f1ea",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f1ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#13110f" },
+  ],
 };
+
+// Inline script that runs BEFORE hydration: reads stored theme, falls back to
+// dark default. Prevents flash of wrong theme. Class "no-theme-transition" is
+// added during initial apply so the 240ms color transition doesn't fire on
+// first paint, then removed on next frame.
+const themeBootstrap = `
+(function(){
+  try {
+    var stored = localStorage.getItem("theme");
+    var theme = stored === "light" || stored === "dark" ? stored : "dark";
+    var html = document.documentElement;
+    html.classList.add("no-theme-transition");
+    html.setAttribute("data-theme", theme);
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        html.classList.remove("no-theme-transition");
+      });
+    });
+  } catch (e) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+})();
+`;
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -63,9 +90,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="dark"
       className={`${display.variable} ${body.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-cream text-ink">
+        <Script
+          id="theme-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeBootstrap }}
+        />
         <JsonLd data={organizationJsonLd} />
         {children}
       </body>

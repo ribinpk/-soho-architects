@@ -1,26 +1,25 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 type LogoProps = {
   className?: string;
-  /**
-   * When true, renders the smaller "icon-only" mark. Currently same wordmark,
-   * but separating intent so the SVG can replace it later.
-   */
+  /** Smaller variant used in the scrolled header state. */
   compact?: boolean;
 };
 
 export function Logo({ className, compact = false }: LogoProps) {
   return (
-    <span
-      aria-hidden="true"
+    <Image
+      src="/brand/logo.png"
+      alt="SOHO Architects"
+      width={2480}
+      height={1276}
+      priority
       className={cn(
-        "font-serif leading-none tracking-tight",
-        compact ? "text-lg" : "text-xl md:text-2xl",
+        "logo-image w-auto select-none transition-[height,filter] duration-300 ease-[var(--ease-soft)]",
+        compact ? "h-6 md:h-7" : "h-8 md:h-9",
         className,
       )}
-    >
-      SOHO
-      <span className="text-mute"> Architects</span>
-    </span>
+    />
   );
 }

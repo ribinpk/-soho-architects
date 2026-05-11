@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { Magnetic } from "@/components/ui/Magnetic";
 
 type Props = {
   eyebrow?: string;
@@ -19,15 +20,17 @@ export function InquiryCta({
         <h2 className="mt-6 font-serif text-headline max-w-[18ch] mx-auto">
           {headline}
         </h2>
-        <Link
-          href="/inquiries"
-          className="mt-10 inline-flex items-center h-12 px-7 bg-ink text-cream text-sm tracking-wide hover:bg-ink-soft transition-colors"
-        >
-          {ctaLabel}
-          <span aria-hidden="true" className="ml-3">
-            →
-          </span>
-        </Link>
+        <Magnetic className="mt-10 inline-block">
+          <Link
+            href="/inquiries"
+            className="press inline-flex items-center h-12 px-7 bg-ink text-cream text-sm tracking-wide hover:bg-ink-soft transition-colors"
+          >
+            {ctaLabel}
+            <span aria-hidden="true" className="ml-3">
+              →
+            </span>
+          </Link>
+        </Magnetic>
       </Container>
     </section>
   );

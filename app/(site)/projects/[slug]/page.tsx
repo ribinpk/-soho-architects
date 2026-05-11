@@ -5,7 +5,10 @@ import { ProjectHero } from "@/components/project/ProjectHero";
 import { ProjectMeta } from "@/components/project/ProjectMeta";
 import { ProjectNav } from "@/components/project/ProjectNav";
 import { ProjectSection } from "@/components/project/ProjectSection";
+import { SectionDots } from "@/components/project/SectionDots";
+import { StickyInquireCta } from "@/components/project/StickyInquireCta";
 import { InquiryCta } from "@/components/site/InquiryCta";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { ProjectDetail, ProjectNavItem } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
@@ -108,29 +111,38 @@ export default async function ProjectPage({
   return (
     <>
       <JsonLd data={jsonLd} />
+      <ScrollProgress />
       <ProjectHero project={project} />
       <ProjectMeta project={project} />
       <ProjectSection
+        id="overview"
         eyebrow="Overview"
         image={project.overviewImage}
         body={project.overviewBody}
         align="left"
+        variant={project.overviewLayout}
       />
       <ProjectSection
+        id="approach"
         eyebrow="Design Approach"
         image={project.designApproachImage}
         body={project.designApproachBody}
         align="right"
+        variant={project.designApproachLayout}
       />
       <ProjectSection
+        id="details"
         eyebrow="Details"
         image={project.detailImage}
         body={project.detailBody}
         align="left"
+        variant={project.detailLayout}
       />
-      <ProjectGallery images={project.gallery} />
+      <ProjectGallery id="gallery" images={project.gallery} />
       <ProjectNav prev={prev} next={next} />
       <InquiryCta />
+      <StickyInquireCta />
+      <SectionDots />
     </>
   );
 }

@@ -11,7 +11,7 @@ export function Footer() {
       <Container className="py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
           <div className="md:col-span-5">
-            <Link href="/" aria-label="SOHO Architects — home">
+            <Link href="/" aria-label="SOHO Architects — home" className="press inline-block">
               <Logo />
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-mute">
@@ -22,12 +22,12 @@ export function Footer() {
 
           <nav className="md:col-span-3" aria-label="Site">
             <span className="eyebrow">Site</span>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-1 text-sm">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-ink hover:text-mute transition-colors"
+                    className="press inline-flex items-center min-h-11 text-ink hover:text-mute transition-colors"
                   >
                     {item.label}
                   </Link>

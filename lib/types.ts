@@ -10,6 +10,8 @@ export type SanityImageRef = {
 
 export type ProjectStatus = "completed" | "ongoing";
 
+export type SectionLayout = "standard" | "full-bleed" | "stacked";
+
 export type ProjectCardData = {
   _id: string;
   name: string;
@@ -28,10 +30,13 @@ export type ProjectDetail = ProjectCardData & {
   description?: PortableTextBlock[];
   overviewImage?: SanityImageRef & { alt: string };
   overviewBody?: PortableTextBlock[];
+  overviewLayout?: SectionLayout;
   designApproachImage?: SanityImageRef & { alt: string };
   designApproachBody?: PortableTextBlock[];
+  designApproachLayout?: SectionLayout;
   detailImage?: SanityImageRef & { alt: string };
   detailBody?: PortableTextBlock[];
+  detailLayout?: SectionLayout;
   gallery?: Array<SanityImageRef & { _key: string; alt: string }>;
   seo?: {
     title?: string;

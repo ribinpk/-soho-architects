@@ -61,10 +61,13 @@ export const projectBySlugQuery = defineQuery(`
     description,
     overviewImage{ ..., "alt": coalesce(alt, "") },
     overviewBody,
+    "overviewLayout": coalesce(overviewLayout, "standard"),
     designApproachImage{ ..., "alt": coalesce(alt, "") },
     designApproachBody,
+    "designApproachLayout": coalesce(designApproachLayout, "standard"),
     detailImage{ ..., "alt": coalesce(alt, "") },
     detailBody,
+    "detailLayout": coalesce(detailLayout, "standard"),
     gallery[]{ ..., "alt": coalesce(alt, "") },
     seo
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import {
   submitInquiry,
@@ -45,6 +45,7 @@ export function InquiryForm() {
           name="name"
           label="Name"
           required
+          autoComplete="name"
           defaultValue={values?.name}
           error={errors?.name}
         />
@@ -52,6 +53,10 @@ export function InquiryForm() {
           name="email"
           label="Email"
           type="email"
+          inputMode="email"
+          autoComplete="email"
+          autoCapitalize="off"
+          spellCheck={false}
           required
           defaultValue={values?.email}
           error={errors?.email}
@@ -59,6 +64,9 @@ export function InquiryForm() {
         <Field
           name="phone"
           label="Phone (optional)"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
           defaultValue={values?.phone}
           error={errors?.phone}
         />
@@ -72,12 +80,14 @@ export function InquiryForm() {
         <Field
           name="location"
           label="Location"
+          autoComplete="address-level2"
           defaultValue={values?.location}
           error={errors?.location}
         />
         <Field
           name="budgetRange"
           label="Budget range (optional)"
+          inputMode="text"
           defaultValue={values?.budgetRange}
           error={errors?.budgetRange}
         />
@@ -114,7 +124,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center h-12 px-7 bg-ink text-cream text-sm tracking-wide hover:bg-ink-soft disabled:opacity-60 disabled:cursor-wait transition-colors"
+      className="press inline-flex items-center justify-center h-12 px-7 bg-ink text-cream text-sm tracking-wide hover:bg-ink-soft disabled:opacity-60 disabled:cursor-wait transition-colors"
     >
       {pending ? "Sending…" : "Send inquiry"}
       {!pending && (
@@ -126,47 +136,141 @@ function SubmitButton() {
   );
 }
 
+type FloatProps = {
+  name: string;
+  label: string;
+  error?: string;
+};
+
+function useShake(error: string | undefined) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!error || !ref.current) return;
+    const el = ref.current;
+    el.classList.remove("shake");
+    void el.offsetWidth;
+    el.classList.add("shake");
+  }, [error]);
+  return ref;
+}
+
+function FloatingLabelShell({
+  children,
+  label,
+  error,
+  name,
+  hasValue,
+  shellRef,
+}: {
+  children: React.ReactNode;
+  label: string;
+  error?: string;
+  name: string;
+  hasValue: boolean;
+  shellRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  return (
+    <div ref={shellRef} className="relative">
+      {children}
+      <label
+        htmlFor={name}
+        className={cn(
+          "absolute left-4 pointer-events-none origin-left transition-all duration-200 ease-[var(--ease-soft)]",
+          "text-mute select-none",
+          hasValue
+            ? "top-1.5 text-[10px] tracking-[0.18em] uppercase text-mute"
+            : "top-1/2 -translate-y-1/2 text-sm",
+          "peer-focus:top-1.5 peer-focus:!translate-y-0 peer-focus:!text-[10px] peer-focus:!tracking-[0.18em] peer-focus:!uppercase peer-focus:!text-ink",
+        )}
+      >
+        {label}
+      </label>
+      {error && (
+        <span
+          id={`${name}-error`}
+          className="mt-1.5 block text-xs text-ink"
+          role="alert"
+        >
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function Field({
   name,
   label,
   type = "text",
+  inputMode,
+  autoComplete,
+  autoCapitalize,
+  spellCheck,
   required,
   defaultValue,
   error,
-}: {
-  name: string;
-  label: string;
+}: FloatProps & {
   type?: string;
+  inputMode?:
+    | "text"
+    | "search"
+    | "email"
+    | "tel"
+    | "url"
+    | "numeric"
+    | "decimal"
+    | "none";
+  autoComplete?: string;
+  autoCapitalize?: string;
+  spellCheck?: boolean;
   required?: boolean;
   defaultValue?: string;
-  error?: string;
 }) {
+  const shellRef = useShake(error);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const hasValueRef = useRef<boolean>(Boolean(defaultValue));
+
   return (
-    <label className="block">
-      <span className="eyebrow">
-        {label}
-        {required && <span aria-hidden="true"> *</span>}
-      </span>
+    <FloatingLabelShell
+      label={`${label}${required ? " *" : ""}`}
+      error={error}
+      name={name}
+      hasValue={hasValueRef.current}
+      shellRef={shellRef}
+    >
       <input
+        id={name}
+        ref={inputRef}
         type={type}
         name={name}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        autoCapitalize={autoCapitalize}
+        spellCheck={spellCheck}
         required={required}
         defaultValue={defaultValue}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
+        placeholder=" "
+        onInput={(e) => {
+          const has = (e.target as HTMLInputElement).value.length > 0;
+          if (has !== hasValueRef.current) {
+            hasValueRef.current = has;
+            const el = inputRef.current;
+            if (el) {
+              el.dataset.filled = has ? "1" : "0";
+              el.parentElement
+                ?.querySelector("label")
+                ?.classList.toggle("filled", has);
+            }
+          }
+        }}
         className={cn(
-          "mt-2 w-full bg-paper border h-11 px-4 text-sm focus:outline-none transition-colors",
-          error
-            ? "border-ink"
-            : "border-hairline focus:border-ink",
+          "peer w-full bg-paper border h-14 px-4 pt-6 pb-1.5 text-base focus:outline-none transition-colors",
+          error ? "border-ink" : "border-hairline focus:border-ink",
         )}
       />
-      {error && (
-        <span id={`${name}-error`} className="mt-1.5 block text-xs text-ink">
-          {error}
-        </span>
-      )}
-    </label>
+    </FloatingLabelShell>
   );
 }
 
@@ -176,34 +280,38 @@ function SelectField({
   defaultValue,
   error,
   options,
-}: {
-  name: string;
-  label: string;
+}: FloatProps & {
   defaultValue?: string;
-  error?: string;
   options: readonly string[];
 }) {
+  const shellRef = useShake(error);
+  const hasValue = Boolean(defaultValue);
   return (
-    <label className="block">
-      <span className="eyebrow">{label}</span>
+    <FloatingLabelShell
+      label={label}
+      error={error}
+      name={name}
+      hasValue={true /* selects always show their value */}
+      shellRef={shellRef}
+    >
       <select
+        id={name}
         name={name}
         defaultValue={defaultValue ?? ""}
         aria-invalid={Boolean(error)}
         className={cn(
-          "mt-2 w-full bg-paper border h-11 px-4 text-sm focus:outline-none transition-colors capitalize",
+          "peer w-full bg-paper border h-14 px-4 pt-6 pb-1.5 text-base focus:outline-none transition-colors capitalize",
           error ? "border-ink" : "border-hairline focus:border-ink",
         )}
       >
-        <option value="">Select…</option>
+        <option value="">{hasValue ? "" : "Select…"}</option>
         {options.map((opt) => (
           <option key={opt} value={opt} className="capitalize">
             {opt}
           </option>
         ))}
       </select>
-      {error && <span className="mt-1.5 block text-xs text-ink">{error}</span>}
-    </label>
+    </FloatingLabelShell>
   );
 }
 
@@ -214,21 +322,20 @@ function Textarea({
   required,
   defaultValue,
   error,
-}: {
-  name: string;
-  label: string;
+}: FloatProps & {
   rows?: number;
   required?: boolean;
   defaultValue?: string;
-  error?: string;
 }) {
+  const shellRef = useShake(error);
   return (
-    <label className="block">
-      <span className="eyebrow">
+    <div ref={shellRef} className="relative">
+      <label htmlFor={name} className="eyebrow block mb-2">
         {label}
         {required && <span aria-hidden="true"> *</span>}
-      </span>
+      </label>
       <textarea
+        id={name}
         name={name}
         rows={rows}
         required={required}
@@ -236,15 +343,19 @@ function Textarea({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
         className={cn(
-          "mt-2 w-full bg-paper border px-4 py-3 text-sm focus:outline-none transition-colors resize-y",
+          "w-full bg-paper border px-4 py-3 text-base focus:outline-none transition-colors resize-y",
           error ? "border-ink" : "border-hairline focus:border-ink",
         )}
       />
       {error && (
-        <span id={`${name}-error`} className="mt-1.5 block text-xs text-ink">
+        <span
+          id={`${name}-error`}
+          className="mt-1.5 block text-xs text-ink"
+          role="alert"
+        >
           {error}
         </span>
       )}
-    </label>
+    </div>
   );
 }

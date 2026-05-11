@@ -93,6 +93,20 @@ export const project = defineType({
       type: "portableText",
     }),
     defineField({
+      name: "overviewLayout",
+      title: "Overview — layout",
+      type: "string",
+      options: {
+        list: [
+          { title: "Standard (split)", value: "standard" },
+          { title: "Full-bleed (image edge-to-edge)", value: "full-bleed" },
+          { title: "Stacked (centered column)", value: "stacked" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "standard",
+    }),
+    defineField({
       name: "designApproachImage",
       title: "Design approach — image",
       type: "image",
@@ -105,6 +119,20 @@ export const project = defineType({
       type: "portableText",
     }),
     defineField({
+      name: "designApproachLayout",
+      title: "Design approach — layout",
+      type: "string",
+      options: {
+        list: [
+          { title: "Standard (split)", value: "standard" },
+          { title: "Full-bleed (image edge-to-edge)", value: "full-bleed" },
+          { title: "Stacked (centered column)", value: "stacked" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "standard",
+    }),
+    defineField({
       name: "detailImage",
       title: "Details — image",
       type: "image",
@@ -115,6 +143,20 @@ export const project = defineType({
       name: "detailBody",
       title: "Details — body",
       type: "portableText",
+    }),
+    defineField({
+      name: "detailLayout",
+      title: "Details — layout",
+      type: "string",
+      options: {
+        list: [
+          { title: "Standard (split)", value: "standard" },
+          { title: "Full-bleed (image edge-to-edge)", value: "full-bleed" },
+          { title: "Stacked (centered column)", value: "stacked" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "standard",
     }),
     defineField({
       name: "gallery",

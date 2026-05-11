@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ProjectCardData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { SanityImage } from "@/components/sanity/SanityImage";
+import { ImageReveal } from "@/components/ui/ImageReveal";
 
 type Variant = "default" | "feature" | "compact";
 
@@ -33,9 +34,10 @@ export function ProjectCard({
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className={cn("group block", className)}
+      data-cursor="view"
+      className={cn("press group block", className)}
     >
-      <div
+      <ImageReveal
         className={cn(
           "relative w-full overflow-hidden bg-surface",
           ratioByVariant[variant],
@@ -49,15 +51,27 @@ export function ProjectCard({
           fill
           className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.025]"
         />
-      </div>
+      </ImageReveal>
 
       <div className="mt-4 md:mt-5">
-        <p className="eyebrow">
+        <p className="eyebrow transition-transform duration-300 ease-[var(--ease-soft)] group-hover:translate-x-1">
           {String(project.projectNumber).padStart(2, "0")} · {project.year}
           {city && <span className="text-mute-soft"> · {city}</span>}
         </p>
-        <h3 className="mt-2 font-serif text-2xl md:text-3xl tracking-tight leading-[1.1] group-hover:text-mute transition-colors">
-          {project.name}
+        <h3
+          className="mt-2 font-serif text-[28px] sm:text-3xl md:text-3xl tracking-tight leading-[1.1] group-hover:text-mute transition-colors"
+          aria-label={project.name}
+        >
+          {project.name.split("").map((char, i) => (
+            <span
+              key={i}
+              aria-hidden="true"
+              className="inline-block transition-transform duration-300 ease-[var(--ease-soft)] group-hover:-translate-y-[3px]"
+              style={{ transitionDelay: `${i * 18}ms` }}
+            >
+              {char === " " ? " " : char}
+            </span>
+          ))}
         </h3>
       </div>
     </Link>

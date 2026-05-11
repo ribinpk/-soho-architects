@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* surfaces */
+  /* semantic surfaces & ink — these flip with theme */
   --color-cream: #f5f1ea;
   --color-paper: #faf7f1;
   --color-surface: #ece5d6;
   --color-hairline: #e0d9cc;
 
-  /* ink */
   --color-ink: #1a1a1a;
   --color-ink-soft: #2a2826;
   --color-mute: #6b6863;
   --color-mute-soft: #8c8881;
+
+  /* fixed colors — never flip; for overlays on photography, lightbox, etc. */
+  --color-light: #f5f1ea;
+  --color-dark: #13110f;
 
   /* legacy aliases used by root layout */
   --color-background: var(--color-cream);
@@ -40,8 +43,8 @@
   --text-subtitle: clamp(1.125rem, 0.9rem + 0.6vw, 1.375rem);
   --text-subtitle--line-height: 1.3;
 
-  --text-body-lg: 1.125rem;
-  --text-body-lg--line-height: 1.6;
+  --text-body-lg: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+  --text-body-lg--line-height: 1.55;
 
   --text-eyebrow: 0.75rem;
   --text-eyebrow--line-height: 1;
@@ -52,9 +55,34 @@
   --radius-sm: 4px;
   --radius-md: 8px;
 
-  /* easing tokens for motion */
+  /* motion — easing */
   --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* motion — durations */
+  --duration-quick: 200ms;
+  --duration-soft: 600ms;
+  --duration-cinematic: 1100ms;
+}
+
+/* dark theme — override semantic tokens; fixed tokens stay put */
+[data-theme="dark"] {
+  --color-cream: #13110f;
+  --color-paper: #1a1714;
+  --color-surface: #221d18;
+  --color-hairline: #2e2922;
+
+  --color-ink: #f0ebe1;
+  --color-ink-soft: #d8d1c4;
+  --color-mute: #9b958a;
+  --color-mute-soft: #6b665d;
+
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
 }
 
 @layer base {
@@ -71,6 +99,17 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  /* color transitions on theme switch — applies broadly but cheaply */
+  html:not(.no-theme-transition) body,
+  html:not(.no-theme-transition) header,
+  html:not(.no-theme-transition) footer,
+  html:not(.no-theme-transition) section,
+  html:not(.no-theme-transition) .theme-tween {
+    transition:
+      background-color 240ms var(--ease-soft),
+      border-color 240ms var(--ease-soft),
+      color 240ms var(--ease-soft);
   }
   ::selection {
     background-color: var(--color-ink);
@@ -89,14 +128,127 @@
     text-transform: uppercase;
     color: var(--color-mute);
   }
+  /* drop cap — first letter of the first paragraph of project descriptions */
+  .with-dropcap > :first-child::first-letter,
+  .with-dropcap p:first-of-type::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 4.5em;
+    line-height: 0.85;
+    padding: 0.35rem 0.55rem 0 0;
+    color: var(--color-ink);
+  }
+
+  /* prevent iOS auto-zoom on focus — inputs must be at least 16px */
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* tactile press: subtle scale + faster transitions on touch interactions */
+  a,
+  button,
+  [role="button"],
+  label,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .press,
+  a.press,
+  button.press {
+    transition:
+      transform 180ms var(--ease-soft),
+      background-color 180ms var(--ease-soft),
+      color 180ms var(--ease-soft),
+      opacity 180ms var(--ease-soft);
+    will-change: transform;
+  }
+  .press:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+  /* Stronger haptic-feel press on coarse pointers (touch). 40ms compression. */
+  @media (pointer: coarse) {
+    .press:active {
+      transform: scale(0.96);
+      transition-duration: 40ms;
+    }
+  }
+
+  /* error shake — applied via .shake class */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-3px); }
+    40%, 80% { transform: translateX(3px); }
+  }
+  .shake {
+    animation: shake 360ms var(--ease-soft);
+  }
+
+  /* dark-mode logo invert — wordmark is monochrome */
+  [data-theme="dark"] .logo-image {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      animation-delay: 0s !important;
+      transition: none !important;
       scroll-behavior: auto !important;
     }
+  }
+
+  /* custom cursor — desktop only, hides native cursor when active */
+  html.custom-cursor-on,
+  html.custom-cursor-on body,
+  html.custom-cursor-on a,
+  html.custom-cursor-on button,
+  html.custom-cursor-on [role="button"],
+  html.custom-cursor-on input,
+  html.custom-cursor-on textarea,
+  html.custom-cursor-on label {
+    cursor: none;
+  }
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 80;
+    will-change: transform;
+  }
+  .custom-cursor__ring {
+    position: absolute;
+    left: -6px;
+    top: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--color-light);
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+  .custom-cursor__label {
+    position: absolute;
+    left: -32px;
+    top: -10px;
+    width: 64px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-light);
+    mix-blend-mode: difference;
+    pointer-events: none;
   }
 }

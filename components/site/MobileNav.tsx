@@ -53,7 +53,13 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
               open: { x: 0 },
               closed: { x: "100%" },
             }}
-            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+            transition={{
+              type: "spring",
+              stiffness: 280,
+              damping: 32,
+              mass: 0.9,
+            }}
+            style={{ paddingTop: "env(safe-area-inset-top)" }}
           >
             <div className="flex items-center justify-between px-6 py-5 border-b border-hairline">
               <span className="eyebrow">Menu</span>
@@ -61,7 +67,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                 type="button"
                 onClick={onClose}
                 aria-label="Close menu"
-                className="size-10 -mr-2 flex items-center justify-center"
+                className="press size-11 -mr-2 flex items-center justify-center"
               >
                 <svg
                   width="20"
@@ -78,18 +84,39 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                 </svg>
               </button>
             </div>
-            <nav className="flex-1 px-6 py-10 flex flex-col gap-7">
-              {NAV_ITEMS.map((item) => (
-                <Link
+            <nav className="flex-1 px-6 py-10 flex flex-col gap-2">
+              {NAV_ITEMS.map((item, i) => (
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  onClick={onClose}
-                  className="font-serif text-4xl tracking-tight leading-none hover:text-mute transition-colors"
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 24 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.18 + i * 0.06,
+                    ease: [0.22, 0.61, 0.36, 1],
+                  }}
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="press block font-serif text-[44px] leading-none tracking-tight py-3 hover:text-mute transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
             </nav>
+            <motion.div
+              className="px-6 py-6 border-t border-hairline text-xs text-mute"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
+              style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
+            >
+              SOHO Architects · Kozhikode
+            </motion.div>
           </motion.aside>
         </motion.div>
       )}

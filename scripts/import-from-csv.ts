@@ -342,10 +342,13 @@ function buildProjectDoc(row: CsvRow, urlMap: Map<string, string>) {
     description: htmlToBlocks(row["Project Description"], urlMap),
     overviewImage: optionalImage("Overview Image", "Overview Image:alt"),
     overviewBody: htmlToBlocks(row["Project Overview"], urlMap),
+    overviewLayout: "standard" as const,
     designApproachImage: optionalImage("Design Approach Image", "Design Approach Image:alt"),
     designApproachBody: htmlToBlocks(row["Design Approach"], urlMap),
+    designApproachLayout: "standard" as const,
     detailImage: optionalImage("Detail Image", "Detail Image:alt"),
     detailBody: htmlToBlocks(row.Details, urlMap),
+    detailLayout: "standard" as const,
     gallery: galleryItems,
   };
 }

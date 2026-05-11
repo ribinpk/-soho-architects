@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { Marquee } from "@/components/ui/Marquee";
 import { Reveal } from "@/components/ui/Reveal";
+import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
 import { SanityImage } from "@/components/sanity/SanityImage";
@@ -40,10 +42,13 @@ export default async function HomePage() {
             <div className="md:col-span-5 md:col-start-1 px-5 sm:px-8 pt-28 pb-14 md:p-12 lg:p-16 flex flex-col justify-end">
               <Reveal>
                 <span className="eyebrow">SOHO Architects · Kozhikode</span>
-                <h1 className="mt-6 font-serif text-display tracking-tight max-w-[18ch]">
-                  Buildings shaped by light, terrain, and the way people
-                  gather.
-                </h1>
+                <SplitText
+                  as="h1"
+                  text="Buildings shaped by light, terrain, and the way people gather."
+                  className="mt-6 block font-serif text-display tracking-tight max-w-[18ch]"
+                  delay={0.2}
+                  stagger={0.05}
+                />
                 <p className="mt-6 max-w-md text-body-lg text-mute">
                   An interior and architecture studio working across
                   residences, workspaces, and quiet rooms.
@@ -148,6 +153,17 @@ export default async function HomePage() {
           </Container>
         </section>
       )}
+
+      {/* Marquee — editorial tagline strip */}
+      <Marquee
+        items={[
+          "Residential",
+          "Workspace",
+          "Hospitality",
+          "Interior",
+          "Heritage",
+        ]}
+      />
 
       {/* Studio teaser */}
       <section className="py-24 md:py-36 border-b border-hairline">
