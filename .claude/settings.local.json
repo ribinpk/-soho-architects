@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk -F',' 'NR>1{print NR-1, $1, $4}' \"/Users/ribin/Soho Website/Ref/Project Detail.csv\")",
+      "Bash(npx --yes create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --skip-install --yes)",
+      "Bash(npx --yes create-next-app@latest soho-architects --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --skip-install --yes)",
+      "Bash(mv soho-architects/* .)",
+      "Bash(mv soho-architects/.[!.]* .)"
+    ]
+  }
+}

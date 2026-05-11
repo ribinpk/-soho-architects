@@ -1,0 +1,77 @@
+import { defineArrayMember, defineField, defineType } from "sanity";
+
+export const siteSettings = defineType({
+  name: "siteSettings",
+  title: "Site settings",
+  type: "document",
+  fields: [
+    defineField({
+      name: "siteTitle",
+      title: "Site title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "siteDescription",
+      title: "Default meta description",
+      type: "text",
+      rows: 3,
+      validation: (Rule) => Rule.required().max(180),
+    }),
+    defineField({
+      name: "tagline",
+      title: "Tagline",
+      type: "string",
+    }),
+    defineField({
+      name: "logo",
+      title: "Logo (SVG preferred)",
+      type: "image",
+      options: { accept: "image/svg+xml,image/png" },
+    }),
+    defineField({
+      name: "ogImage",
+      title: "Default Open Graph image",
+      type: "image",
+    }),
+    defineField({
+      name: "contactEmail",
+      title: "Contact email",
+      type: "string",
+      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: "contactPhone",
+      title: "Contact phone",
+      type: "string",
+    }),
+    defineField({
+      name: "address",
+      title: "Studio address",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "social",
+      title: "Social links",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "socialLink",
+          fields: [
+            { name: "label", type: "string", validation: (R) => R.required() },
+            { name: "url", type: "url", validation: (R) => R.required() },
+          ],
+          preview: { select: { title: "label", subtitle: "url" } },
+        }),
+      ],
+    }),
+    defineField({
+      name: "footerCopy",
+      title: "Footer copy",
+      type: "portableText",
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Site settings" }) },
+});
