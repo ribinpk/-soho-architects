@@ -58,8 +58,6 @@ export type ProjectNavItem = {
 export type StudioPageData = {
   introHeadline: string;
   introBody?: PortableTextBlock[];
-  approachHeadline?: string;
-  approachBody?: PortableTextBlock[];
   team?: Array<{
     name: string;
     role: string;

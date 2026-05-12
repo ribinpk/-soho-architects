@@ -25,16 +25,6 @@ export const studioPage = defineType({
       type: "portableText",
     }),
     defineField({
-      name: "approachHeadline",
-      title: "Approach — headline",
-      type: "string",
-    }),
-    defineField({
-      name: "approachBody",
-      title: "Approach — body",
-      type: "portableText",
-    }),
-    defineField({
       name: "team",
       title: "Team",
       type: "array",

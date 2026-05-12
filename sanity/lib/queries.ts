@@ -93,8 +93,6 @@ export const studioPageQuery = defineQuery(`
   *[_type == "studioPage"][0]{
     introHeadline,
     introBody,
-    approachHeadline,
-    approachBody,
     team[]{
       name,
       role,

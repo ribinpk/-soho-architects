@@ -76,8 +76,6 @@ export default async function StudioPage() {
   });
 
   const introBody = data?.introBody && data.introBody.length > 0 ? data.introBody : null;
-  const approachBody =
-    data?.approachBody && data.approachBody.length > 0 ? data.approachBody : null;
   const team = data?.team && data.team.length > 0 ? data.team : null;
   const press: PressEntry[] =
     data?.press && data.press.length > 0 ? data.press : FALLBACK_PRESS;
@@ -119,30 +117,6 @@ export default async function StudioPage() {
           </div>
         </Container>
       </section>
-
-      {approachBody && (
-        <section className="py-16 md:py-28 border-b border-hairline">
-          <Container>
-            <div className="md:grid md:grid-cols-12 md:gap-12">
-              <div className="md:col-span-3">
-                <Reveal>
-                  <span className="eyebrow">Approach</span>
-                  {data?.approachHeadline && (
-                    <h2 className="mt-4 font-serif text-title">
-                      {data.approachHeadline}
-                    </h2>
-                  )}
-                </Reveal>
-              </div>
-              <div className="md:col-span-7 md:col-start-5">
-                <Reveal delay={0.08}>
-                  <PortableTextRenderer value={approachBody} />
-                </Reveal>
-              </div>
-            </div>
-          </Container>
-        </section>
-      )}
 
       <ProcessTimeline />
 
