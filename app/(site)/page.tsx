@@ -6,10 +6,17 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
+import { PressStrip } from "@/components/site/PressStrip";
+import { StatsStrip } from "@/components/site/StatsStrip";
+import { Testimonials } from "@/components/site/Testimonials";
 import { SanityImage } from "@/components/sanity/SanityImage";
-import type { ProjectCardData } from "@/lib/types";
+import type { PressLogo, ProjectCardData, TestimonialItem } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { homeQuery } from "@/sanity/lib/queries";
+import {
+  homeQuery,
+  pressLogosQuery,
+  testimonialsQuery,
+} from "@/sanity/lib/queries";
 
 export const revalidate = 60;
 
@@ -25,7 +32,15 @@ type HomeData = {
 };
 
 export default async function HomePage() {
-  const data = await sanityFetch<HomeData>(homeQuery, { tags: ["projects"] });
+  const [data, testimonials, pressLogos] = await Promise.all([
+    sanityFetch<HomeData>(homeQuery, { tags: ["projects"] }),
+    sanityFetch<TestimonialItem[] | null>(testimonialsQuery, {
+      tags: ["siteSettings"],
+    }),
+    sanityFetch<PressLogo[] | null>(pressLogosQuery, {
+      tags: ["siteSettings"],
+    }),
+  ]);
   const featured =
     data.featured.length > 0
       ? data.featured.slice(0, 3)
@@ -153,6 +168,15 @@ export default async function HomePage() {
           </Container>
         </section>
       )}
+
+      {/* Press — borrowed authority */}
+      <PressStrip logos={pressLogos ?? undefined} />
+
+      {/* Stats — authority strip */}
+      <StatsStrip />
+
+      {/* Testimonials — client voice */}
+      <Testimonials testimonials={testimonials ?? undefined} />
 
       {/* Marquee — editorial tagline strip */}
       <Marquee

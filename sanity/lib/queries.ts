@@ -11,9 +11,23 @@ export const siteSettingsQuery = defineQuery(`
     contactPhone,
     address,
     social,
+    pressLogos,
+    testimonials,
     footerCopy
   }
 `);
+
+export const testimonialsQuery = defineQuery(`
+  *[_type == "siteSettings"][0].testimonials
+`);
+
+export const pressLogosQuery = defineQuery(`
+  *[_type == "siteSettings"][0].pressLogos
+`);
+
+// Reusable image projection — pulls alt with a coalesce fallback and the LQIP
+// (low-quality image placeholder, base64 PNG) for next/image's blur placeholder.
+const imageFields = `..., "alt": coalesce(alt, ""), "lqip": asset->metadata.lqip`;
 
 const projectCardProjection = `
   _id,
@@ -26,7 +40,7 @@ const projectCardProjection = `
   year,
   builtArea,
   featured,
-  cover{ ..., "alt": coalesce(alt, "") }
+  cover{ ${imageFields} }
 `;
 
 export const homeQuery = defineQuery(`
@@ -57,18 +71,18 @@ export const projectBySlugQuery = defineQuery(`
     status,
     year,
     builtArea,
-    cover{ ..., "alt": coalesce(alt, "") },
+    cover{ ${imageFields} },
     description,
-    overviewImage{ ..., "alt": coalesce(alt, "") },
+    overviewImage{ ${imageFields} },
     overviewBody,
     "overviewLayout": coalesce(overviewLayout, "standard"),
-    designApproachImage{ ..., "alt": coalesce(alt, "") },
+    designApproachImage{ ${imageFields} },
     designApproachBody,
     "designApproachLayout": coalesce(designApproachLayout, "standard"),
-    detailImage{ ..., "alt": coalesce(alt, "") },
+    detailImage{ ${imageFields} },
     detailBody,
     "detailLayout": coalesce(detailLayout, "standard"),
-    gallery[]{ ..., "alt": coalesce(alt, "") },
+    gallery[]{ ${imageFields} },
     seo
   }
 `);
@@ -94,7 +108,7 @@ export const studioPageQuery = defineQuery(`
     team[]{
       name,
       role,
-      headshot{ ..., "alt": coalesce(alt, "") },
+      headshot{ ${imageFields} },
       bio
     },
     press[]{

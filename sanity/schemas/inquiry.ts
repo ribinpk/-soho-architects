@@ -8,22 +8,30 @@ export const inquiry = defineType({
     defineField({ name: "name", type: "string", validation: (R) => R.required() }),
     defineField({ name: "email", type: "string", validation: (R) => R.required().email() }),
     defineField({ name: "phone", type: "string" }),
+    defineField({ name: "location", type: "string" }),
     defineField({
-      name: "projectType",
+      name: "timeline",
       type: "string",
       options: {
         list: [
-          { title: "Residential", value: "residential" },
-          { title: "Commercial", value: "commercial" },
-          { title: "Hospitality", value: "hospitality" },
-          { title: "Workspace", value: "workspace" },
-          { title: "Interior", value: "interior" },
-          { title: "Other", value: "other" },
+          { title: "Under 3 months", value: "under-3-months" },
+          { title: "3 – 6 months", value: "3-6-months" },
+          { title: "6+ months", value: "6-plus-months" },
+          { title: "Just exploring", value: "exploring" },
         ],
       },
     }),
-    defineField({ name: "location", type: "string" }),
-    defineField({ name: "budgetRange", type: "string" }),
+    defineField({
+      name: "siteSecured",
+      type: "string",
+      options: {
+        list: [
+          { title: "Yes", value: "yes" },
+          { title: "No", value: "no" },
+          { title: "Not yet", value: "not-yet" },
+        ],
+      },
+    }),
     defineField({ name: "message", type: "text", rows: 6, validation: (R) => R.required().min(10) }),
     defineField({
       name: "createdAt",

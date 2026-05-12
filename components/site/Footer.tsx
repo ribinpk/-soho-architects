@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "./Logo";
 import { NAV_ITEMS } from "./nav-items";
+import { STUDIO_PHONES } from "@/lib/contact";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -45,6 +46,18 @@ export function Footer() {
               <br />
               Kozhikode, Kerala 673009
             </address>
+            <ul className="mt-4 space-y-1 text-sm">
+              {STUDIO_PHONES.map((p) => (
+                <li key={p.tel}>
+                  <a
+                    href={`tel:${p.tel}`}
+                    className="press text-ink hover:text-mute transition-colors tabular-nums"
+                  >
+                    {p.display}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

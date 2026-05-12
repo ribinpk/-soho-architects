@@ -17,7 +17,7 @@ export function Logo({ className, compact = false }: LogoProps) {
       priority
       className={cn(
         "logo-image w-auto select-none transition-[height,filter] duration-300 ease-[var(--ease-soft)]",
-        compact ? "h-6 md:h-7" : "h-8 md:h-9",
+        compact ? "h-12 md:h-14" : "h-16 md:h-[4.5rem]",
         className,
       )}
     />

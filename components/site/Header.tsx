@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
+import { AnimatePresence } from "motion/react";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
 import { NAV_ITEMS } from "./nav-items";
@@ -37,7 +38,7 @@ export function Header() {
           as="div"
           className={cn(
             "flex items-center justify-between transition-[height] duration-300 ease-[var(--ease-soft)]",
-            scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
+            scrolled ? "h-20 md:h-24" : "h-24 md:h-28",
           )}
         >
           <Link
@@ -80,6 +81,31 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-1 -mr-2">
+            <AnimatePresence>
+              {scrolled && pathname !== "/inquiries" && (
+                <motion.div
+                  key="cta"
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 12 }}
+                  transition={{
+                    duration: 0.32,
+                    ease: [0.22, 0.61, 0.36, 1],
+                  }}
+                  className="hidden md:inline-flex mr-3"
+                >
+                  <Link
+                    href="/inquiries"
+                    className="press inline-flex items-center h-9 px-4 text-xs tracking-wide bg-ink text-cream hover:bg-ink-soft transition-colors"
+                  >
+                    Start a project
+                    <span aria-hidden="true" className="ml-2">
+                      →
+                    </span>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <ThemeToggle />
             <button
               type="button"

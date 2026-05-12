@@ -1,5 +1,6 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { ContactFab } from "@/components/site/ContactFab";
 import { Cursor } from "@/components/ui/Cursor";
 
 export default function SiteLayout({
@@ -12,6 +13,7 @@ export default function SiteLayout({
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <ContactFab />
       <Cursor />
     </>
   );

@@ -1,4 +1,5 @@
 import type { InquiryInput } from "./schema";
+import { labelForSiteSecured, labelForTimeline } from "./schema";
 
 function escape(s: string): string {
   return s
@@ -31,9 +32,9 @@ export function renderInquiryHtml(data: InquiryInput): string {
         ${row("Name", data.name)}
         ${row("Email", data.email)}
         ${row("Phone", data.phone || undefined)}
-        ${row("Project type", data.projectType)}
         ${row("Location", data.location || undefined)}
-        ${row("Budget", data.budgetRange || undefined)}
+        ${row("Timeline", labelForTimeline(data.timeline))}
+        ${row("Site secured", labelForSiteSecured(data.siteSecured))}
         ${row("Message", data.message)}
       </table>
       <p style="margin:28px 0 0;font:12px/1.55 system-ui,sans-serif;color:#8c8881;">Reply to this email to respond to ${escape(data.name)}.</p>
@@ -50,9 +51,11 @@ export function renderInquiryText(data: InquiryInput): string {
     `Email:    ${data.email}`,
   ];
   if (data.phone) lines.push(`Phone:    ${data.phone}`);
-  if (data.projectType) lines.push(`Type:     ${data.projectType}`);
   if (data.location) lines.push(`Location: ${data.location}`);
-  if (data.budgetRange) lines.push(`Budget:   ${data.budgetRange}`);
+  const timelineLabel = labelForTimeline(data.timeline);
+  if (timelineLabel) lines.push(`Timeline: ${timelineLabel}`);
+  const siteLabel = labelForSiteSecured(data.siteSecured);
+  if (siteLabel) lines.push(`Site:     ${siteLabel}`);
   lines.push(``, `Message:`, data.message);
   return lines.join("\n");
 }

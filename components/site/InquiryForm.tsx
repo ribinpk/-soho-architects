@@ -6,7 +6,10 @@ import {
   submitInquiry,
   type InquiryState,
 } from "@/app/(site)/inquiries/actions";
-import { projectTypes } from "@/lib/inquiry/schema";
+import {
+  siteSecuredOptions,
+  timelineOptions,
+} from "@/lib/inquiry/schema";
 import { cn } from "@/lib/utils";
 
 const initial: InquiryState = { status: "idle" };
@@ -70,13 +73,6 @@ export function InquiryForm() {
           defaultValue={values?.phone}
           error={errors?.phone}
         />
-        <SelectField
-          name="projectType"
-          label="Project type"
-          defaultValue={values?.projectType}
-          error={errors?.projectType}
-          options={projectTypes}
-        />
         <Field
           name="location"
           label="Location"
@@ -84,14 +80,21 @@ export function InquiryForm() {
           defaultValue={values?.location}
           error={errors?.location}
         />
-        <Field
-          name="budgetRange"
-          label="Budget range (optional)"
-          inputMode="text"
-          defaultValue={values?.budgetRange}
-          error={errors?.budgetRange}
-        />
       </div>
+
+      <RadioGroup
+        name="timeline"
+        label="When would you like to start?"
+        options={timelineOptions}
+        defaultValue={values?.timeline}
+      />
+
+      <RadioGroup
+        name="siteSecured"
+        label="Site secured?"
+        options={siteSecuredOptions}
+        defaultValue={values?.siteSecured}
+      />
 
       <Textarea
         name="message"
@@ -154,49 +157,15 @@ function useShake(error: string | undefined) {
   return ref;
 }
 
-function FloatingLabelShell({
-  children,
-  label,
-  error,
-  name,
-  hasValue,
-  shellRef,
-}: {
-  children: React.ReactNode;
-  label: string;
-  error?: string;
-  name: string;
-  hasValue: boolean;
-  shellRef: React.RefObject<HTMLDivElement | null>;
-}) {
-  return (
-    <div ref={shellRef} className="relative">
-      {children}
-      <label
-        htmlFor={name}
-        className={cn(
-          "absolute left-4 pointer-events-none origin-left transition-all duration-200 ease-[var(--ease-soft)]",
-          "text-mute select-none",
-          hasValue
-            ? "top-1.5 text-[10px] tracking-[0.18em] uppercase text-mute"
-            : "top-1/2 -translate-y-1/2 text-sm",
-          "peer-focus:top-1.5 peer-focus:!translate-y-0 peer-focus:!text-[10px] peer-focus:!tracking-[0.18em] peer-focus:!uppercase peer-focus:!text-ink",
-        )}
-      >
-        {label}
-      </label>
-      {error && (
-        <span
-          id={`${name}-error`}
-          className="mt-1.5 block text-xs text-ink"
-          role="alert"
-        >
-          {error}
-        </span>
-      )}
-    </div>
-  );
-}
+const floatLabelClasses = cn(
+  "absolute left-4 pointer-events-none origin-left transition-all duration-200 ease-[var(--ease-soft)] select-none",
+  // resting state — vertically centered in the input
+  "top-1/2 -translate-y-1/2 text-sm text-mute",
+  // focused — float up & shrink
+  "peer-focus:top-1.5 peer-focus:translate-y-0 peer-focus:text-[10px] peer-focus:tracking-[0.18em] peer-focus:uppercase peer-focus:text-ink",
+  // filled (placeholder=" " trick) — float up & shrink
+  "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:tracking-[0.18em] peer-[:not(:placeholder-shown)]:uppercase",
+);
 
 function Field({
   name,
@@ -227,20 +196,10 @@ function Field({
   defaultValue?: string;
 }) {
   const shellRef = useShake(error);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const hasValueRef = useRef<boolean>(Boolean(defaultValue));
-
   return (
-    <FloatingLabelShell
-      label={`${label}${required ? " *" : ""}`}
-      error={error}
-      name={name}
-      hasValue={hasValueRef.current}
-      shellRef={shellRef}
-    >
+    <div ref={shellRef} className="relative">
       <input
         id={name}
-        ref={inputRef}
         type={type}
         name={name}
         inputMode={inputMode}
@@ -252,66 +211,69 @@ function Field({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
         placeholder=" "
-        onInput={(e) => {
-          const has = (e.target as HTMLInputElement).value.length > 0;
-          if (has !== hasValueRef.current) {
-            hasValueRef.current = has;
-            const el = inputRef.current;
-            if (el) {
-              el.dataset.filled = has ? "1" : "0";
-              el.parentElement
-                ?.querySelector("label")
-                ?.classList.toggle("filled", has);
-            }
-          }
-        }}
         className={cn(
           "peer w-full bg-paper border h-14 px-4 pt-6 pb-1.5 text-base focus:outline-none transition-colors",
           error ? "border-ink" : "border-hairline focus:border-ink",
         )}
       />
-    </FloatingLabelShell>
+      <label htmlFor={name} className={floatLabelClasses}>
+        {label}
+        {required && <span aria-hidden="true"> *</span>}
+      </label>
+      {error && (
+        <span
+          id={`${name}-error`}
+          className="mt-1.5 block text-xs text-ink"
+          role="alert"
+        >
+          {error}
+        </span>
+      )}
+    </div>
   );
 }
 
-function SelectField({
+function RadioGroup({
   name,
   label,
-  defaultValue,
-  error,
   options,
-}: FloatProps & {
+  defaultValue,
+}: {
+  name: string;
+  label: string;
+  options: readonly { value: string; label: string }[];
   defaultValue?: string;
-  options: readonly string[];
 }) {
-  const shellRef = useShake(error);
-  const hasValue = Boolean(defaultValue);
   return (
-    <FloatingLabelShell
-      label={label}
-      error={error}
-      name={name}
-      hasValue={true /* selects always show their value */}
-      shellRef={shellRef}
-    >
-      <select
-        id={name}
-        name={name}
-        defaultValue={defaultValue ?? ""}
-        aria-invalid={Boolean(error)}
-        className={cn(
-          "peer w-full bg-paper border h-14 px-4 pt-6 pb-1.5 text-base focus:outline-none transition-colors capitalize",
-          error ? "border-ink" : "border-hairline focus:border-ink",
-        )}
-      >
-        <option value="">{hasValue ? "" : "Select…"}</option>
+    <fieldset>
+      <legend className="eyebrow block mb-3">{label}</legend>
+      <div className="flex flex-wrap gap-2">
         {options.map((opt) => (
-          <option key={opt} value={opt} className="capitalize">
-            {opt}
-          </option>
+          <label
+            key={opt.value}
+            className="press relative inline-flex items-center cursor-pointer"
+          >
+            <input
+              type="radio"
+              name={name}
+              value={opt.value}
+              defaultChecked={defaultValue === opt.value}
+              className="peer sr-only"
+            />
+            <span
+              className={cn(
+                "inline-flex items-center h-10 px-4 text-sm border border-hairline transition-colors",
+                "peer-checked:bg-ink peer-checked:text-cream peer-checked:border-ink",
+                "peer-focus-visible:ring-2 peer-focus-visible:ring-ink/40 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-paper",
+                "hover:border-ink",
+              )}
+            >
+              {opt.label}
+            </span>
+          </label>
         ))}
-      </select>
-    </FloatingLabelShell>
+      </div>
+    </fieldset>
   );
 }
 

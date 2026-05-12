@@ -3,6 +3,8 @@ import type { PortableTextBlock } from "@portabletext/types";
 export type SanityImageRef = {
   _type: "image";
   alt?: string;
+  /** Base64-encoded low-quality image placeholder from Sanity asset.metadata.lqip. */
+  lqip?: string;
   asset?: { _ref: string; _type: "reference" };
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
@@ -73,6 +75,19 @@ export type StudioPageData = {
 
 export type SocialLink = { label: string; url: string };
 
+export type TestimonialItem = {
+  quote: string;
+  author: string;
+  role?: string;
+  project?: string;
+};
+
+export type PressLogo = {
+  name: string;
+  logo?: SanityImageRef;
+  url?: string;
+};
+
 export type SiteSettings = {
   siteTitle: string;
   siteDescription: string;
@@ -83,5 +98,7 @@ export type SiteSettings = {
   contactPhone?: string;
   address?: string;
   social?: SocialLink[];
+  pressLogos?: PressLogo[];
+  testimonials?: TestimonialItem[];
   footerCopy?: PortableTextBlock[];
 };

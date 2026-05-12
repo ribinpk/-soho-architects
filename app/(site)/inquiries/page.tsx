@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { InquiryForm } from "@/components/site/InquiryForm";
+import { STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Inquiries",
@@ -40,15 +41,27 @@ export default function InquiriesPage() {
                   <br />
                   Kozhikode, Kerala 673009
                 </address>
+                <ul className="mt-4 space-y-1 text-base">
+                  {STUDIO_PHONES.map((p) => (
+                    <li key={p.tel}>
+                      <a
+                        href={`tel:${p.tel}`}
+                        className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors tabular-nums"
+                      >
+                        {p.display}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
                 <dl className="mt-8 space-y-5 text-sm">
                   <div>
                     <dt className="eyebrow">Email</dt>
                     <dd className="mt-1.5">
                       <a
-                        href="mailto:studio@sohoarch.com"
+                        href={`mailto:${STUDIO_EMAIL}`}
                         className="underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
                       >
-                        studio@sohoarch.com
+                        {STUDIO_EMAIL}
                       </a>
                     </dd>
                   </div>

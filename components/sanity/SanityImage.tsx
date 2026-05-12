@@ -53,6 +53,9 @@ export function SanityImage({
 
   const baseUrl = urlForImage(image).url().split("?")[0];
   const altText = alt ?? image.alt ?? "";
+  const blurProps = image.lqip
+    ? { placeholder: "blur" as const, blurDataURL: image.lqip }
+    : {};
 
   if (fill) {
     return (
@@ -64,6 +67,7 @@ export function SanityImage({
         sizes={sizes}
         priority={priority}
         className={className}
+        {...blurProps}
       />
     );
   }
@@ -79,6 +83,7 @@ export function SanityImage({
       sizes={sizes}
       priority={priority}
       className={className}
+      {...blurProps}
     />
   );
 }

@@ -1,10 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type Theme = "light" | "dark";
+
+type Pulse = { id: number; x: number; y: number; to: Theme };
 
 function readTheme(): Theme {
   if (typeof document === "undefined") return "dark";
@@ -15,15 +17,25 @@ function readTheme(): Theme {
 export function ThemeToggle({ className }: { className?: string }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
+  const [pulse, setPulse] = useState<Pulse | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setTheme(readTheme());
     setMounted(true);
   }, []);
 
-  const toggle = () => {
+  const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const next: Theme = theme === "dark" ? "light" : "dark";
     setTheme(next);
+    if (!prefersReducedMotion) {
+      setPulse({
+        id: Date.now(),
+        x: e.clientX,
+        y: e.clientY,
+        to: next,
+      });
+    }
     const html = document.documentElement;
     // Disable color transitions during the swap so the browser commits the new
     // var() values immediately (a known quirk: var() updates can get stuck on
@@ -43,9 +55,36 @@ export function ThemeToggle({ className }: { className?: string }) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
+    <>
+      <AnimatePresence>
+        {pulse && (
+          <motion.div
+            key={pulse.id}
+            aria-hidden="true"
+            className="fixed pointer-events-none z-[55] rounded-full mix-blend-screen"
+            style={{
+              left: pulse.x,
+              top: pulse.y,
+              width: 24,
+              height: 24,
+              marginLeft: -12,
+              marginTop: -12,
+              background:
+                pulse.to === "light"
+                  ? "radial-gradient(circle, rgba(255,180,90,0.55), rgba(255,180,90,0) 70%)"
+                  : "radial-gradient(circle, rgba(120,140,210,0.55), rgba(120,140,210,0) 70%)",
+            }}
+            initial={{ opacity: 0.9, scale: 0.4 }}
+            animate={{ opacity: 0, scale: 28 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            onAnimationComplete={() => setPulse(null)}
+          />
+        )}
+      </AnimatePresence>
+      <button
+        type="button"
+        onClick={toggle}
       aria-label={
         mounted
           ? theme === "dark"
@@ -60,24 +99,25 @@ export function ThemeToggle({ className }: { className?: string }) {
             : "Switch to dark mode"
           : undefined
       }
-      className={cn(
-        "press relative size-11 flex items-center justify-center text-ink hover:text-mute",
-        className,
-      )}
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={theme}
-          className="absolute inset-0 flex items-center justify-center"
-          initial={{ opacity: 0, rotate: -30, scale: 0.85 }}
-          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-          exit={{ opacity: 0, rotate: 30, scale: 0.85 }}
-          transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-        >
-          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-        </motion.span>
-      </AnimatePresence>
-    </button>
+        className={cn(
+          "press relative size-11 flex items-center justify-center text-ink hover:text-mute",
+          className,
+        )}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={theme}
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0, rotate: -30, scale: 0.85 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: 30, scale: 0.85 }}
+            transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
+          >
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+          </motion.span>
+        </AnimatePresence>
+      </button>
+    </>
   );
 }
 

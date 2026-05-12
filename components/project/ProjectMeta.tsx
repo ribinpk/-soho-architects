@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { PortableTextRenderer } from "@/components/sanity/PortableText";
 import { CountUp } from "@/components/ui/CountUp";
 import type { ProjectDetail } from "@/lib/types";
+import { readingTimeMinutes } from "@/lib/utils";
 
 const STATUS_LABEL: Record<string, string> = {
   completed: "Completed",
@@ -10,6 +11,12 @@ const STATUS_LABEL: Record<string, string> = {
 
 export function ProjectMeta({ project }: { project: ProjectDetail }) {
   const statusLabel = project.status ? STATUS_LABEL[project.status] : undefined;
+  const readMinutes = readingTimeMinutes(
+    project.description,
+    project.overviewBody,
+    project.designApproachBody,
+    project.detailBody,
+  );
 
   return (
     <section className="border-b border-hairline">
@@ -61,6 +68,10 @@ export function ProjectMeta({ project }: { project: ProjectDetail }) {
         </dl>
 
         <div className="md:col-span-6 md:col-start-7">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="eyebrow !text-mute">{readMinutes} min read</span>
+            <span aria-hidden="true" className="flex-1 h-px bg-hairline" />
+          </div>
           <PortableTextRenderer
             value={project.description}
             className="with-dropcap"

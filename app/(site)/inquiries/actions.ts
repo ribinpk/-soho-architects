@@ -82,9 +82,9 @@ export async function submitInquiry(
         name: parsed.data.name,
         email: parsed.data.email,
         phone: parsed.data.phone || undefined,
-        projectType: parsed.data.projectType,
         location: parsed.data.location || undefined,
-        budgetRange: parsed.data.budgetRange || undefined,
+        timeline: parsed.data.timeline || undefined,
+        siteSecured: parsed.data.siteSecured || undefined,
         message: parsed.data.message,
         createdAt: new Date().toISOString(),
       });
