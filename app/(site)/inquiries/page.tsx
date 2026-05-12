@@ -5,9 +5,9 @@ import { InquiryForm } from "@/components/site/InquiryForm";
 import { STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
 
 export const metadata: Metadata = {
-  title: "Inquiries",
+  title: "Start an Inquiry — SOHO Architects",
   description:
-    "Start a conversation with SOHO Architects. Tell us about your site, your timeline, and what you'd like to make.",
+    "Tell us about your site, your timing, and what you'd like to make. We reply within three working days, always from a person.",
 };
 
 export default function InquiriesPage() {
@@ -21,8 +21,8 @@ export default function InquiriesPage() {
               Tell us about your site, and what you'd like to make there.
             </h1>
             <p className="mt-6 max-w-xl text-body-lg text-mute">
-              A few words about the project, the location, and your timing helps
-              us reply with care. Required fields are marked *.
+              A few words about the place, the timing, and what you&apos;re
+              imagining helps us reply with care. Required fields are marked *.
             </p>
           </Reveal>
         </Container>
@@ -68,7 +68,10 @@ export default function InquiriesPage() {
                   <div>
                     <dt className="eyebrow">Hours</dt>
                     <dd className="mt-1.5 text-mute">
-                      Mon — Fri · 10:00 to 18:00 IST
+                      Monday to Friday · 10:00 to 18:00 IST
+                    </dd>
+                    <dd className="mt-1 text-mute">
+                      Site visits on Saturdays, by appointment.
                     </dd>
                   </div>
                 </dl>

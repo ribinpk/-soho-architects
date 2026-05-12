@@ -11,7 +11,7 @@ export type ProcessStep = {
 
 const DEFAULT_STEPS: ProcessStep[] = [
   { title: "Brief", detail: "A long, unhurried conversation. We listen for what isn't said." },
-  { title: "Site study", detail: "Light, terrain, climate, neighbours, sound — we read the land first." },
+  { title: "Site study", detail: "Light, terrain, monsoon, neighbours, sound. We read the land before we draw." },
   { title: "Schemes", detail: "Two or three ideas, drawn by hand, defended in plan and section." },
   { title: "Drawings", detail: "Every joint resolved on paper before it leaves the studio." },
   { title: "Build", detail: "Weekly site visits. The drawings adapt to what the site teaches us." },

@@ -75,7 +75,7 @@ export function InquiryForm() {
         />
         <Field
           name="location"
-          label="Location"
+          label="Location of the site"
           autoComplete="address-level2"
           defaultValue={values?.location}
           error={errors?.location}
@@ -99,6 +99,7 @@ export function InquiryForm() {
       <Textarea
         name="message"
         label="Tell us about the project"
+        helper="A few sentences is enough. The land, the brief, what's drawing you to build."
         required
         rows={6}
         defaultValue={values?.message}
@@ -114,7 +115,8 @@ export function InquiryForm() {
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
         <SubmitButton />
         <p className="text-xs text-mute">
-          We typically reply within a few business days.
+          We reply within three working days, always from a person —
+          usually one of the founders.
         </p>
       </div>
     </form>
@@ -280,11 +282,13 @@ function RadioGroup({
 function Textarea({
   name,
   label,
+  helper,
   rows = 5,
   required,
   defaultValue,
   error,
 }: FloatProps & {
+  helper?: string;
   rows?: number;
   required?: boolean;
   defaultValue?: string;
@@ -296,6 +300,9 @@ function Textarea({
         {label}
         {required && <span aria-hidden="true"> *</span>}
       </label>
+      {helper && (
+        <p className="-mt-1 mb-2 text-sm text-mute max-w-[60ch]">{helper}</p>
+      )}
       <textarea
         id={name}
         name={name}

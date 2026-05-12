@@ -11,7 +11,6 @@ export const siteSettingsQuery = defineQuery(`
     contactPhone,
     address,
     social,
-    pressLogos,
     testimonials,
     footerCopy
   }
@@ -19,10 +18,6 @@ export const siteSettingsQuery = defineQuery(`
 
 export const testimonialsQuery = defineQuery(`
   *[_type == "siteSettings"][0].testimonials
-`);
-
-export const pressLogosQuery = defineQuery(`
-  *[_type == "siteSettings"][0].pressLogos
 `);
 
 // Reusable image projection — pulls alt with a coalesce fallback and the LQIP

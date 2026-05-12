@@ -84,12 +84,6 @@ export type TestimonialItem = {
   project?: string;
 };
 
-export type PressLogo = {
-  name: string;
-  logo?: SanityImageRef;
-  url?: string;
-};
-
 export type SiteSettings = {
   siteTitle: string;
   siteDescription: string;
@@ -100,7 +94,6 @@ export type SiteSettings = {
   contactPhone?: string;
   address?: string;
   social?: SocialLink[];
-  pressLogos?: PressLogo[];
   testimonials?: TestimonialItem[];
   footerCopy?: PortableTextBlock[];
 };

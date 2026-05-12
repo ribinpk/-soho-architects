@@ -16,10 +16,10 @@ type Props = {
 };
 
 const DEFAULTS: Stat[] = [
-  { value: 12, suffix: "+", label: "Years in practice" },
-  { value: 60, suffix: "+", label: "Projects delivered" },
-  { value: 4, label: "States · India" },
-  { value: 100, suffix: "%", label: "Founder-led" },
+  { value: 15, label: "Years in practice" },
+  { value: 36, label: "Projects delivered" },
+  { value: 3, label: "States · India" },
+  { value: 1, label: "Studio · Kozhikode" },
 ];
 
 export function StatsStrip({ eyebrow = "By the numbers", stats = DEFAULTS }: Props) {

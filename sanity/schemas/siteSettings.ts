@@ -68,33 +68,6 @@ export const siteSettings = defineType({
       ],
     }),
     defineField({
-      name: "pressLogos",
-      title: "Press logos",
-      description:
-        "Publications that have featured the studio. Shown as a strip on the home page. Logo is optional — name falls back to a serif text-mark.",
-      type: "array",
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "pressLogo",
-          fields: [
-            {
-              name: "name",
-              type: "string",
-              validation: (R) => R.required(),
-            },
-            {
-              name: "logo",
-              type: "image",
-              options: { accept: "image/svg+xml,image/png" },
-            },
-            { name: "url", type: "url" },
-          ],
-          preview: { select: { title: "name", media: "logo" } },
-        }),
-      ],
-    }),
-    defineField({
       name: "testimonials",
       title: "Testimonials",
       description: "Client quotes shown on the home page. Aim for 3.",

@@ -6,24 +6,38 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
-import { PressStrip } from "@/components/site/PressStrip";
 import { StatsStrip } from "@/components/site/StatsStrip";
 import { Testimonials } from "@/components/site/Testimonials";
 import { SanityImage } from "@/components/sanity/SanityImage";
-import type { PressLogo, ProjectCardData, TestimonialItem } from "@/lib/types";
+import type { ProjectCardData, TestimonialItem } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import {
-  homeQuery,
-  pressLogosQuery,
-  testimonialsQuery,
-} from "@/sanity/lib/queries";
+import { homeQuery, testimonialsQuery } from "@/sanity/lib/queries";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "SOHO Architects — Interior & Architecture Studio",
+  title: "SOHO Architects — Architecture & Interiors, Kozhikode",
   description:
-    "An interior and architecture studio based in Kozhikode, Kerala. Selected work across residences, workplaces, and quiet rooms.",
+    "An architecture and interiors practice on the Malabar coast. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
+};
+
+// Placeholder one-line captions per project, keyed by slug. Shown on the
+// home page tiles until the studio refines each per project (likely via
+// Sanity later). Leaving the map open means any unknown slug just shows
+// no caption — never a stale placeholder for a project we didn't intend.
+const PROJECT_CAPTIONS: Record<string, string> = {
+  "soho-work-living":
+    "The studio's own building. A test case for everything we ask of clients.",
+  "valley-house":
+    "A house that gives the hillside back its view.",
+  "mathamangalam-house":
+    "Laterite, shade, and a long verandah for the rain.",
+  "payyavoor-house":
+    "A courtyard at the centre, the plan arranged around it.",
+  "sanctum-of-solace":
+    "A home built to be quieter than the street outside.",
+  "la-vie":
+    "Light from the east, kept low until noon.",
 };
 
 type HomeData = {
@@ -32,12 +46,9 @@ type HomeData = {
 };
 
 export default async function HomePage() {
-  const [data, testimonials, pressLogos] = await Promise.all([
+  const [data, testimonials] = await Promise.all([
     sanityFetch<HomeData>(homeQuery, { tags: ["projects"] }),
     sanityFetch<TestimonialItem[] | null>(testimonialsQuery, {
-      tags: ["siteSettings"],
-    }),
-    sanityFetch<PressLogo[] | null>(pressLogosQuery, {
       tags: ["siteSettings"],
     }),
   ]);
@@ -65,8 +76,8 @@ export default async function HomePage() {
                   stagger={0.05}
                 />
                 <p className="mt-6 max-w-md text-body-lg text-mute">
-                  An interior and architecture studio working across
-                  residences, workspaces, and quiet rooms.
+                  An architecture and interiors practice on the Malabar
+                  coast, working across homes, workplaces, and quiet rooms.
                 </p>
                 <div className="mt-10 flex flex-wrap gap-3 text-sm">
                   <Link
@@ -126,14 +137,25 @@ export default async function HomePage() {
         <section className="py-20 md:py-32 border-b border-hairline">
           <Container>
             <Reveal>
-              <div className="flex items-baseline justify-between">
-                <h2 className="font-serif text-headline">Selected work</h2>
-                <Link
-                  href="/projects"
-                  className="hidden md:inline-flex text-sm text-mute hover:text-ink transition-colors"
-                >
-                  View all →
-                </Link>
+              <div className="md:grid md:grid-cols-12 md:gap-12 md:items-end">
+                <div className="md:col-span-5">
+                  <h2 className="font-serif text-headline">Selected work</h2>
+                </div>
+                <div className="md:col-span-6 md:col-start-6 mt-5 md:mt-0">
+                  <p className="text-body-lg text-mute max-w-[44ch]">
+                    A small selection. Houses that learned from their
+                    hillsides, rooms that hold the afternoon, workplaces
+                    that don&apos;t pretend to be elsewhere.
+                  </p>
+                </div>
+                <div className="md:col-span-1 md:col-start-12 md:justify-self-end mt-4 md:mt-0">
+                  <Link
+                    href="/projects"
+                    className="hidden md:inline-flex text-sm text-mute hover:text-ink transition-colors whitespace-nowrap"
+                  >
+                    View all →
+                  </Link>
+                </div>
               </div>
             </Reveal>
             <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-16 gap-y-16 md:gap-y-24">
@@ -143,7 +165,11 @@ export default async function HomePage() {
                   className={i % 2 === 1 ? "md:mt-20 lg:mt-32" : ""}
                 >
                   <Reveal delay={(i % 2) * 0.08}>
-                    <ProjectCard project={p} variant="default" />
+                    <ProjectCard
+                      project={p}
+                      variant="default"
+                      caption={PROJECT_CAPTIONS[p.slug]}
+                    />
                   </Reveal>
                 </div>
               ))}
@@ -152,7 +178,11 @@ export default async function HomePage() {
               <div className="mt-20 md:mt-28 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-12">
                 {rest.map((p, i) => (
                   <Reveal key={p._id} delay={i * 0.06}>
-                    <ProjectCard project={p} variant="compact" />
+                    <ProjectCard
+                      project={p}
+                      variant="compact"
+                      caption={PROJECT_CAPTIONS[p.slug]}
+                    />
                   </Reveal>
                 ))}
               </div>
@@ -169,13 +199,59 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Press — borrowed authority */}
-      <PressStrip logos={pressLogos ?? undefined} />
-
       {/* Stats — authority strip */}
       <StatsStrip />
 
-      {/* Testimonials — client voice */}
+      {/* What we work on — gives the marquee a sentence each */}
+      <section className="py-20 md:py-28 border-b border-hairline">
+        <Container>
+          <Reveal>
+            <span className="eyebrow">What we work on</span>
+          </Reveal>
+          <dl className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 md:gap-y-12">
+            {[
+              {
+                term: "Residential",
+                detail:
+                  "Homes for the way Kerala actually lives — verandahs, courtyards, families that gather.",
+              },
+              {
+                term: "Workspace",
+                detail:
+                  "Offices that read the climate before the brief. Daylight first, air second, screens last.",
+              },
+              {
+                term: "Hospitality",
+                detail:
+                  "Small hotels and retreats that belong to their site, not to a style.",
+              },
+              {
+                term: "Interiors",
+                detail:
+                  "Rooms finished the way the building was drawn — every joint resolved twice.",
+              },
+              {
+                term: "Heritage",
+                detail:
+                  "Tile-roofed buildings rethought without losing their bones.",
+              },
+            ].map((item, i) => (
+              <Reveal key={item.term} delay={(i % 2) * 0.06}>
+                <div className="border-t border-hairline pt-6">
+                  <dt className="font-serif text-2xl md:text-3xl tracking-tight">
+                    {item.term}
+                  </dt>
+                  <dd className="mt-3 text-body-lg text-mute max-w-[42ch]">
+                    {item.detail}
+                  </dd>
+                </div>
+              </Reveal>
+            ))}
+          </dl>
+        </Container>
+      </section>
+
+      {/* From the studio — replaces synthetic testimonials */}
       <Testimonials testimonials={testimonials ?? undefined} />
 
       {/* Marquee — editorial tagline strip */}
@@ -184,7 +260,7 @@ export default async function HomePage() {
           "Residential",
           "Workspace",
           "Hospitality",
-          "Interior",
+          "Interiors",
           "Heritage",
         ]}
       />
@@ -210,9 +286,10 @@ export default async function HomePage() {
             <div className="md:col-span-7 md:col-start-5">
               <Reveal delay={0.08}>
                 <p className="font-serif text-title tracking-tight leading-tight">
-                  We design buildings that respond to climate, terrain, and the
-                  way people gather. Each project is shaped by the site that
-                  holds it.
+                  An architecture and interiors practice in Kozhikode. Most
+                  of our work is in Kerala, where the monsoon writes half
+                  the brief. Some of it is elsewhere. The principles
+                  don&apos;t change with the postcode.
                 </p>
                 <Link
                   href="/studio"

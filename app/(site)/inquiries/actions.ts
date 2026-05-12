@@ -95,6 +95,7 @@ export async function submitInquiry(
 
   return {
     status: "success",
-    message: "Thanks. We've received your note and will reply within a few days.",
+    message:
+      "Thanks. We've received your note and will reply within three working days — always from a person.",
   };
 }

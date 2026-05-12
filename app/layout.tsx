@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s — SOHO Architects",
   },
   description:
-    "SOHO Architects is an interior and architecture studio working on residential, commercial, and workspace projects.",
+    "An architecture and interiors practice on the Malabar coast. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
   openGraph: {
     siteName: "SOHO Architects",
     type: "website",
@@ -73,7 +73,7 @@ const organizationJsonLd = {
   url: siteUrl,
   logo: `${siteUrl}/brand/logo.svg`,
   description:
-    "Interior and architecture studio in Kozhikode, Kerala — residential, workplace, and hospitality projects.",
+    "An architecture and interiors practice in Kozhikode, Kerala — homes, workplaces, hospitality, interiors, and heritage projects.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Golf Link Road, Malaparamba",

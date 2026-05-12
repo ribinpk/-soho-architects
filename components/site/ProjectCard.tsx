@@ -23,11 +23,14 @@ export function ProjectCard({
   variant = "default",
   priority,
   className,
+  caption,
 }: {
   project: ProjectCardData;
   variant?: Variant;
   priority?: boolean;
   className?: string;
+  /** Optional one-line editorial caption rendered beneath the title. */
+  caption?: string;
 }) {
   const city = project.location?.split(",")[0]?.trim();
 
@@ -73,6 +76,11 @@ export function ProjectCard({
             </span>
           ))}
         </h3>
+        {caption && (
+          <p className="mt-3 text-sm leading-relaxed text-mute max-w-[36ch]">
+            {caption}
+          </p>
+        )}
       </div>
     </Link>
   );

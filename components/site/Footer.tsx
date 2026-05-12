@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "./Logo";
 import { NAV_ITEMS } from "./nav-items";
-import { STUDIO_PHONES } from "@/lib/contact";
+import { STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -16,8 +16,8 @@ export function Footer() {
               <Logo />
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-mute">
-              An interior and architecture studio working across residential,
-              commercial, and workspace projects.
+              An architecture and interiors practice in Kozhikode, working
+              across homes, workplaces, and quiet rooms.
             </p>
           </div>
 
@@ -57,13 +57,21 @@ export function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={`mailto:${STUDIO_EMAIL}`}
+                  className="press text-ink hover:text-mute transition-colors"
+                >
+                  {STUDIO_EMAIL}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-14 pt-6 border-t border-hairline flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-mute">
-          <span>© {year} SOHO Architects. All rights reserved.</span>
-          <span>Designed and built in 2026</span>
+          <span>© {year} SOHO Architects. Drawn and built in Kozhikode.</span>
+          <span>All rights reserved.</span>
         </div>
       </Container>
     </footer>
