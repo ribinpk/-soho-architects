@@ -5,7 +5,7 @@ export const STUDIO_ADDRESS = {
 } as const;
 
 export const STUDIO_PHONES = [
-  { display: "+91 88 9198 80801", tel: "+918891988081" },
+  { display: "+91 88919 80801", tel: "+918891980801" },
   { display: "+91 77 3674 9385", tel: "+917736749385" },
 ] as const;
 
