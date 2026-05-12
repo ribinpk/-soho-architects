@@ -11,13 +11,8 @@ export const siteSettingsQuery = defineQuery(`
     contactPhone,
     address,
     social,
-    testimonials,
     footerCopy
   }
-`);
-
-export const testimonialsQuery = defineQuery(`
-  *[_type == "siteSettings"][0].testimonials
 `);
 
 // Reusable image projection — pulls alt with a coalesce fallback and the LQIP

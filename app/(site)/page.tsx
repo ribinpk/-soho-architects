@@ -6,11 +6,10 @@ import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
 import { StatsStrip } from "@/components/site/StatsStrip";
-import { Testimonials } from "@/components/site/Testimonials";
 import { SanityImage } from "@/components/sanity/SanityImage";
-import type { ProjectCardData, TestimonialItem } from "@/lib/types";
+import type { ProjectCardData } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { homeQuery, testimonialsQuery } from "@/sanity/lib/queries";
+import { homeQuery } from "@/sanity/lib/queries";
 
 export const revalidate = 60;
 
@@ -45,12 +44,7 @@ type HomeData = {
 };
 
 export default async function HomePage() {
-  const [data, testimonials] = await Promise.all([
-    sanityFetch<HomeData>(homeQuery, { tags: ["projects"] }),
-    sanityFetch<TestimonialItem[] | null>(testimonialsQuery, {
-      tags: ["siteSettings"],
-    }),
-  ]);
+  const data = await sanityFetch<HomeData>(homeQuery, { tags: ["projects"] });
   const featured =
     data.featured.length > 0
       ? data.featured.slice(0, 3)
@@ -249,9 +243,6 @@ export default async function HomePage() {
           </dl>
         </Container>
       </section>
-
-      {/* From the studio — replaces synthetic testimonials */}
-      <Testimonials testimonials={testimonials ?? undefined} />
 
       {/* Studio teaser */}
       <section className="relative py-24 md:py-36 border-b border-hairline overflow-hidden">

@@ -77,13 +77,6 @@ export type StudioPageData = {
 
 export type SocialLink = { label: string; url: string };
 
-export type TestimonialItem = {
-  quote: string;
-  author: string;
-  role?: string;
-  project?: string;
-};
-
 export type SiteSettings = {
   siteTitle: string;
   siteDescription: string;
@@ -94,6 +87,5 @@ export type SiteSettings = {
   contactPhone?: string;
   address?: string;
   social?: SocialLink[];
-  testimonials?: TestimonialItem[];
   footerCopy?: PortableTextBlock[];
 };
