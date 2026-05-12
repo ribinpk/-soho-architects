@@ -3,6 +3,8 @@ import type { PortableTextBlock } from "@portabletext/types";
 export type SanityImageRef = {
   _type: "image";
   alt?: string;
+  /** Editorial caption rendered under the image (gallery, lightbox). */
+  caption?: string;
   /** Base64-encoded low-quality image placeholder from Sanity asset.metadata.lqip. */
   lqip?: string;
   asset?: { _ref: string; _type: "reference" };

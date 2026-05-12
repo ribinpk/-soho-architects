@@ -1,13 +1,22 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { SanityImage } from "@/components/sanity/SanityImage";
 import { Container } from "@/components/ui/Container";
 import type { ProjectDetail } from "@/lib/types";
 
 export function ProjectHero({ project }: { project: ProjectDetail }) {
   const ref = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  // Two-phase render: server + first hydration paint show the sketch overlay
+  // intact (y: 0). A post-mount effect flips `revealed` to start the wipe.
+  // This avoids hydration mismatches that motion's auto-on-mount can trigger
+  // when its initial style is serialised differently by React on SSR vs. client.
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    setRevealed(true);
+  }, []);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -31,6 +40,7 @@ export function ProjectHero({ project }: { project: ProjectDetail }) {
           style={{ scale, y: imageY }}
           className="absolute inset-0 origin-center"
         >
+          {/* Photo layer — the finished image. */}
           <SanityImage
             image={project.cover}
             alt={project.cover?.alt || project.name}
@@ -39,6 +49,33 @@ export function ProjectHero({ project }: { project: ProjectDetail }) {
             fill
             className="object-cover"
           />
+          {/* Sketch layer — same image, stripped to a high-contrast graphite
+              study. Wipes off top-down on mount to reveal the photo beneath. */}
+          <motion.div
+            aria-hidden="true"
+            initial={false}
+            animate={{ y: revealed ? "-100%" : "0%" }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 1.6,
+              delay: prefersReducedMotion ? 0 : 0.3,
+              ease: [0.83, 0, 0.17, 1],
+            }}
+            className="absolute inset-0"
+          >
+            <SanityImage
+              image={project.cover}
+              alt=""
+              sizes="100vw"
+              priority
+              fill
+              className="object-cover [filter:grayscale(1)_contrast(1.6)_brightness(1.15)]"
+            />
+            {/* paper warmth tint on top of the sketch — sells the graphite feel */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-light/35 mix-blend-multiply"
+            />
+          </motion.div>
         </motion.div>
         <div
           aria-hidden="true"

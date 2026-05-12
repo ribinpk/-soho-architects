@@ -189,6 +189,15 @@ export function Lightbox({
             </motion.div>
           </button>
 
+          {/* caption */}
+          {current.caption && (
+            <div className="px-5 sm:px-8 pb-6 sm:pb-8 text-center pointer-events-none">
+              <p className="font-serif italic text-sm md:text-base text-light/75 max-w-[60ch] mx-auto leading-snug">
+                {current.caption}
+              </p>
+            </div>
+          )}
+
           {/* arrows (desktop) */}
           {hasPrev && (
             <button

@@ -20,6 +20,7 @@ export function Marquee({ items, duration = 38, className }: Props) {
 
   return (
     <div
+      data-cursor="scrub"
       className={`relative w-full overflow-hidden border-y border-hairline py-5 md:py-7 ${className ?? ""}`}
       aria-hidden="true"
     >

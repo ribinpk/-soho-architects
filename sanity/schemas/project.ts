@@ -166,7 +166,16 @@ export const project = defineType({
         defineArrayMember({
           type: "image",
           options: { hotspot: true },
-          fields: [{ name: "alt", type: "string", title: "Alt text" }],
+          fields: [
+            { name: "alt", type: "string", title: "Alt text" },
+            {
+              name: "caption",
+              type: "string",
+              title: "Caption",
+              description:
+                "Short editorial line shown under the image — e.g. 'South-facing courtyard, late afternoon'.",
+            },
+          ],
         }),
       ],
     }),

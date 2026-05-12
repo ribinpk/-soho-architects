@@ -28,23 +28,30 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
             delay={(i % 2) * 0.08}
             className="snap-start shrink-0 basis-[85%] md:basis-auto md:shrink"
           >
-            <button
-              type="button"
-              aria-label={`Open image ${i + 1}`}
-              onClick={() => {
-                setIndex(i);
-                setOpen(true);
-              }}
-              className="group relative block w-full aspect-[4/5] overflow-hidden bg-surface cursor-zoom-in"
-            >
-              <SanityImage
-                image={img}
-                alt={img.alt || `Gallery image ${i + 1}`}
-                sizes="(max-width: 768px) 85vw, 50vw"
-                fill
-                className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.025]"
-              />
-            </button>
+            <figure className="flex flex-col">
+              <button
+                type="button"
+                aria-label={`Open image ${i + 1}`}
+                onClick={() => {
+                  setIndex(i);
+                  setOpen(true);
+                }}
+                className="group relative block w-full aspect-[4/5] overflow-hidden bg-surface cursor-zoom-in"
+              >
+                <SanityImage
+                  image={img}
+                  alt={img.alt || `Gallery image ${i + 1}`}
+                  sizes="(max-width: 768px) 85vw, 50vw"
+                  fill
+                  className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.025]"
+                />
+              </button>
+              {img.caption && (
+                <figcaption className="mt-3 font-serif italic text-sm leading-snug text-mute max-w-[42ch]">
+                  {img.caption}
+                </figcaption>
+              )}
+            </figure>
           </ImageReveal>
         ))}
       </div>

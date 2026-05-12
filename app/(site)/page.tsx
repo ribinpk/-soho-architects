@@ -190,8 +190,17 @@ export default async function HomePage() {
       />
 
       {/* Studio teaser */}
-      <section className="py-24 md:py-36 border-b border-hairline">
-        <Container>
+      <section className="relative py-24 md:py-36 border-b border-hairline overflow-hidden">
+        {/* Rooted identity — large soft Malayalam watermark.
+            "സോഹോ" — SOHO, transliterated. */}
+        <span
+          aria-hidden="true"
+          lang="ml"
+          className="absolute select-none pointer-events-none font-serif leading-[0.85] tracking-tight text-ink opacity-[0.045] -bottom-[6vw] md:-bottom-[8vw] -right-[2vw] md:-right-[4vw] text-[42vw] md:text-[24vw]"
+        >
+          സോഹോ
+        </span>
+        <Container className="relative">
           <div className="md:grid md:grid-cols-12 md:gap-12">
             <div className="md:col-span-3">
               <Reveal>

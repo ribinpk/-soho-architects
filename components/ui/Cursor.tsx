@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
 
-type State = "default" | "hover" | "view" | "text" | "image";
+type State = "default" | "hover" | "view" | "text" | "image" | "scrub";
 
 export function Cursor() {
   const [enabled, setEnabled] = useState(false);
@@ -37,6 +37,7 @@ export function Cursor() {
       if (dataMatch) {
         const tag = dataMatch.dataset.cursor;
         if (tag === "view") return setState("view");
+        if (tag === "scrub") return setState("scrub");
         if (tag === "text") return setState("text");
         if (tag === "image") return setState("image");
         if (tag === "hide") return setState("default");
@@ -69,13 +70,17 @@ export function Cursor() {
 
   if (!enabled) return null;
 
-  // Ring transform: scale + non-uniform for "text" (I-beam)
+  // Ring transform: scale + non-uniform for "text" (I-beam) and "scrub" (wide pill)
   let ringScale = 1;
   let ringScaleY = 1;
   let ringRadius = 999;
   switch (state) {
     case "view":
       ringScale = 5.5;
+      break;
+    case "scrub":
+      ringScale = 7; // wide horizontal pill
+      ringScaleY = 3;
       break;
     case "hover":
       ringScale = 2.6;
@@ -92,6 +97,9 @@ export function Cursor() {
       ringScale = 1;
   }
 
+  const labelVisible = state === "view" || state === "scrub";
+  const labelText = state === "scrub" ? "← drag →" : "View";
+
   return (
     <motion.div
       aria-hidden="true"
@@ -105,10 +113,10 @@ export function Cursor() {
       />
       <motion.span
         className="custom-cursor__label"
-        animate={{ opacity: state === "view" ? 1 : 0, y: state === "view" ? 0 : 4 }}
+        animate={{ opacity: labelVisible ? 1 : 0, y: labelVisible ? 0 : 4 }}
         transition={{ duration: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
       >
-        View
+        {labelText}
       </motion.span>
     </motion.div>
   );

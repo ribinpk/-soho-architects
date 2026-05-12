@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PortableTextRenderer } from "@/components/sanity/PortableText";
 import { SanityImage } from "@/components/sanity/SanityImage";
 import { InquiryCta } from "@/components/site/InquiryCta";
+import { ProcessTimeline } from "@/components/site/ProcessTimeline";
 import type { StudioPageData } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { studioPageQuery } from "@/sanity/lib/queries";
@@ -81,6 +82,8 @@ export default async function StudioPage() {
           </Container>
         </section>
       )}
+
+      <ProcessTimeline />
 
       {data?.team && data.team.length > 0 && (
         <section className="py-16 md:py-28 border-b border-hairline">
