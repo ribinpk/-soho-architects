@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Marquee } from "@/components/ui/Marquee";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
@@ -254,17 +253,6 @@ export default async function HomePage() {
       {/* From the studio — replaces synthetic testimonials */}
       <Testimonials testimonials={testimonials ?? undefined} />
 
-      {/* Marquee — editorial tagline strip */}
-      <Marquee
-        items={[
-          "Residential",
-          "Workspace",
-          "Hospitality",
-          "Interiors",
-          "Heritage",
-        ]}
-      />
-
       {/* Studio teaser */}
       <section className="relative py-24 md:py-36 border-b border-hairline overflow-hidden">
         {/* Rooted identity — large soft Malayalam watermark.
@@ -286,9 +274,8 @@ export default async function HomePage() {
             <div className="md:col-span-7 md:col-start-5">
               <Reveal delay={0.08}>
                 <p className="font-serif text-title tracking-tight leading-tight">
-                  An architecture and interiors practice in Kozhikode. Most
-                  of our work is in Kerala, where the monsoon writes half
-                  the brief. Some of it is elsewhere. The principles
+                  Most of our work is in Kerala, where the monsoon writes
+                  half the brief. Some of it is elsewhere. The principles
                   don&apos;t change with the postcode.
                 </p>
                 <Link
