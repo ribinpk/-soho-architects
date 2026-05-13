@@ -89,6 +89,47 @@ export const projectNavQuery = defineQuery(`
   }
 `);
 
+const insightCardProjection = `
+  _id,
+  title,
+  "slug": slug.current,
+  publishedAt,
+  excerpt,
+  author,
+  readingMinutes,
+  cover{ ${imageFields} }
+`;
+
+export const insightsIndexQuery = defineQuery(`
+  *[_type == "insightPost" && defined(slug.current) && publishedAt < now()]
+    | order(publishedAt desc){
+    ${insightCardProjection}
+  }
+`);
+
+export const insightSlugsQuery = defineQuery(`
+  *[_type == "insightPost" && defined(slug.current)]{ "slug": slug.current }
+`);
+
+export const insightBySlugQuery = defineQuery(`
+  *[_type == "insightPost" && slug.current == $slug][0]{
+    ${insightCardProjection},
+    updatedAt,
+    authorRole,
+    body,
+    faqs[]{ q, a },
+    relatedProjects[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      location,
+      cover{ ${imageFields} }
+    },
+    relatedServices,
+    seo
+  }
+`);
+
 export const studioPageQuery = defineQuery(`
   *[_type == "studioPage"][0]{
     introHeadline,

@@ -34,6 +34,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/insights"
+                  className="press inline-flex items-center min-h-11 text-ink hover:text-mute transition-colors"
+                >
+                  Insights
+                </Link>
+              </li>
             </ul>
           </nav>
 
@@ -51,6 +59,9 @@ export function Footer() {
                 <li key={p.tel}>
                   <a
                     href={`tel:${p.tel}`}
+                    data-event="phone_click"
+                    data-event-source="footer"
+                    data-event-value={p.tel}
                     className="press text-ink hover:text-mute transition-colors tabular-nums"
                   >
                     {p.display}
@@ -60,6 +71,8 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${STUDIO_EMAIL}`}
+                  data-event="email_click"
+                  data-event-source="footer"
                   className="press text-ink hover:text-mute transition-colors"
                 >
                   {STUDIO_EMAIL}

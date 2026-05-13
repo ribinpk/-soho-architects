@@ -7,16 +7,27 @@ import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
 import { StatsStrip } from "@/components/site/StatsStrip";
 import { SanityImage } from "@/components/sanity/SanityImage";
+import { JsonLd } from "@/components/seo/JsonLd";
 import type { ProjectCardData } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { homeQuery } from "@/sanity/lib/queries";
+import { faqPageJsonLd, siteUrl } from "@/lib/seo";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "SOHO Architects — Architecture & Interiors, Kozhikode",
+  title: {
+    absolute: "Architects in Calicut, Kerala | SOHO Architects",
+  },
   description:
-    "An architecture and interiors practice on the Malabar coast. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
+    "SOHO Architects is an architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led residential, commercial, and interior projects since 2011.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Architects in Calicut, Kerala | SOHO Architects",
+    description:
+      "Architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
+    url: "/",
+  },
 };
 
 // Placeholder one-line captions per project, keyed by slug. Shown on the
@@ -52,8 +63,19 @@ export default async function HomePage() {
   const heroProject = featured[0] ?? data.selected[0];
   const rest = data.selected.slice(featured.length, featured.length + 4);
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "SOHO Architects",
+    url: siteUrl(),
+    publisher: { "@id": `${siteUrl()}/#organization` },
+    inLanguage: "en-IN",
+  };
+
   return (
     <>
+      <JsonLd data={websiteJsonLd} />
+      <JsonLd data={faqPageJsonLd(HOME_FAQS)} />
       {/* Hero */}
       <section className="border-b border-hairline">
         <Container className="px-0 sm:px-0 md:px-0 lg:px-0">
@@ -63,14 +85,16 @@ export default async function HomePage() {
                 <span className="eyebrow">SOHO Architects · Kozhikode</span>
                 <SplitText
                   as="h1"
-                  text="Buildings shaped by light, terrain, and the way people gather."
-                  className="mt-6 block font-serif text-display tracking-tight max-w-[18ch]"
+                  text="Architects in Calicut, building for light, terrain, and the way people gather."
+                  className="mt-6 block font-serif text-display tracking-tight max-w-[20ch]"
                   delay={0.2}
                   stagger={0.05}
                 />
                 <p className="mt-6 max-w-md text-body-lg text-mute">
-                  An architecture and interiors practice on the Malabar
-                  coast, working across homes, workplaces, and quiet rooms.
+                  SOHO Architects is an architecture and interior design firm
+                  based in Calicut (Kozhikode), Kerala. Founder-led,
+                  climate-responsive, working across homes, workplaces, and
+                  quiet rooms since 2011.
                 </p>
                 <div className="mt-10 flex flex-wrap gap-3 text-sm">
                   <Link
@@ -192,6 +216,73 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Why SOHO — authority + Calicut keyword surface */}
+      <section className="py-20 md:py-28 border-b border-hairline">
+        <Container>
+          <div className="md:grid md:grid-cols-12 md:gap-12">
+            <div className="md:col-span-4">
+              <Reveal>
+                <span className="eyebrow">Why SOHO</span>
+                <h2 className="mt-6 font-serif text-headline tracking-tight max-w-[18ch]">
+                  An architecture firm in Calicut, for Kerala&apos;s climate
+                  and the way it lives.
+                </h2>
+              </Reveal>
+            </div>
+            <div className="md:col-span-7 md:col-start-6">
+              <Reveal delay={0.08}>
+                <div className="space-y-5 text-body-lg leading-relaxed max-w-[58ch]">
+                  <p>
+                    Founded in Calicut in 2011, SOHO is a founder-led
+                    architecture and interior design practice. Every project
+                    is run by one of three partners from the first
+                    conversation to the last site visit — not by a junior
+                    team you only meet on signing day.
+                  </p>
+                  <p>
+                    We design for the place we&apos;re from. Malabar light,
+                    long monsoons, laterite ground, courtyards that breathe,
+                    verandahs that work harder than they look. Most of our
+                    work is in Kozhikode and across Kerala — Malappuram,
+                    Kannur, Wayanad, Thrissur — with the occasional project
+                    elsewhere in India.
+                  </p>
+                  <p>
+                    The studio works across three lines: residential
+                    architecture (houses, villas, second homes), commercial
+                    and workplace projects (offices, hospitality, small
+                    institutional work), and interior design — rooms
+                    detailed the way the building was drawn. Recognised by
+                    IIA Kerala and a small number of editorial publications,
+                    but mostly by clients who came back for the next house.
+                  </p>
+                </div>
+                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+                  <Link
+                    href="/services/residential-architects-calicut"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Residential architects in Calicut →
+                  </Link>
+                  <Link
+                    href="/services/commercial-architects-calicut"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Commercial architects in Calicut →
+                  </Link>
+                  <Link
+                    href="/services/interior-designers-calicut"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Interior designers in Calicut →
+                  </Link>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* Stats — authority strip */}
       <StatsStrip />
 
@@ -207,21 +298,25 @@ export default async function HomePage() {
                 term: "Residential",
                 detail:
                   "Homes for the way Kerala actually lives — verandahs, courtyards, families that gather.",
+                href: "/services/residential-architects-calicut",
               },
               {
                 term: "Workspace",
                 detail:
                   "Offices that read the climate before the brief. Daylight first, air second, screens last.",
+                href: "/services/commercial-architects-calicut",
               },
               {
                 term: "Hospitality",
                 detail:
                   "Small hotels and retreats that belong to their site, not to a style.",
+                href: "/services/commercial-architects-calicut",
               },
               {
                 term: "Interiors",
                 detail:
                   "Rooms finished the way the building was drawn — every joint resolved twice.",
+                href: "/services/interior-designers-calicut",
               },
               {
                 term: "Heritage",
@@ -232,7 +327,19 @@ export default async function HomePage() {
               <Reveal key={item.term} delay={(i % 2) * 0.06}>
                 <div className="border-t border-hairline pt-6">
                   <dt className="font-serif text-2xl md:text-3xl tracking-tight">
-                    {item.term}
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className="press hover:text-mute transition-colors"
+                      >
+                        {item.term}
+                        <span aria-hidden="true" className="ml-2 text-mute">
+                          →
+                        </span>
+                      </Link>
+                    ) : (
+                      item.term
+                    )}
                   </dt>
                   <dd className="mt-3 text-body-lg text-mute max-w-[42ch]">
                     {item.detail}
@@ -281,7 +388,66 @@ export default async function HomePage() {
         </Container>
       </section>
 
+      {/* FAQ — answers common queries from prospective clients in Calicut & Kerala.
+          Plain HTML; FAQPage JSON-LD wired up in Phase 5. */}
+      <section className="py-20 md:py-28 border-b border-hairline">
+        <Container>
+          <div className="md:grid md:grid-cols-12 md:gap-12">
+            <div className="md:col-span-4">
+              <Reveal>
+                <span className="eyebrow">FAQ</span>
+                <h2 className="mt-6 font-serif text-headline tracking-tight max-w-[14ch]">
+                  Working with an architect in Calicut.
+                </h2>
+              </Reveal>
+            </div>
+            <div className="md:col-span-8">
+              <dl className="border-t border-hairline">
+                {HOME_FAQS.map((item, i) => (
+                  <Reveal key={item.q} delay={(i % 3) * 0.05}>
+                    <div className="border-b border-hairline py-7 md:py-8">
+                      <dt className="font-serif text-2xl md:text-[1.7rem] tracking-tight">
+                        {item.q}
+                      </dt>
+                      <dd className="mt-3 text-body-lg text-mute leading-relaxed max-w-[60ch]">
+                        {item.a}
+                      </dd>
+                    </div>
+                  </Reveal>
+                ))}
+              </dl>
+              <p className="mt-8 text-sm text-mute">
+                More questions? <Link href="/inquiries" className="press underline decoration-1 underline-offset-4 hover:text-ink transition-colors">Start an inquiry</Link> — we reply within three working days, always from a person.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
       <InquiryCta />
     </>
   );
 }
+
+const HOME_FAQS: { q: string; a: string }[] = [
+  {
+    q: "Where are SOHO Architects based?",
+    a: "Our studio is on Golf Link Road, Malaparamba, in Calicut (Kozhikode). Most of our work is in Kerala — Kozhikode, Malappuram, Kannur, Wayanad, Thrissur — with the occasional project elsewhere in India.",
+  },
+  {
+    q: "What does SOHO Architects work on?",
+    a: "Three lines of work: residential architecture (houses, villas, second homes), commercial and workplace projects (offices, small hotels, institutional buildings), and interior design. Every project is led personally by one of the three founding partners.",
+  },
+  {
+    q: "How much does a house designed by an architect in Calicut cost?",
+    a: "Architect fees in Calicut typically run between 6% and 10% of the build cost, depending on scope and the level of detailing involved. Build costs vary widely by site, finishes, and structural system. We discuss budgets openly at the first meeting so there are no surprises later.",
+  },
+  {
+    q: "How long does it take to design and build a house in Kerala?",
+    a: "From the first conversation to handover, a typical SOHO house takes 18 to 30 months — roughly 4 to 6 months of design and drawings, the rest in construction. Larger or more complex projects take longer. We&apos;d rather move at the pace the building deserves than rush a draft.",
+  },
+  {
+    q: "Do you work on small projects or interiors only?",
+    a: "Yes. About a third of the studio&apos;s work is interiors — homes already built that want resolving — or smaller renovations and additions. We&apos;re happy to start with a single room and stay through the rest of the house.",
+  },
+];

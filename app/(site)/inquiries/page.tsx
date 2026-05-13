@@ -2,17 +2,45 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { InquiryForm } from "@/components/site/InquiryForm";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
+import { absoluteUrl, breadcrumbsJsonLd, ORG_ID } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Start an Inquiry — SOHO Architects",
+  title: {
+    absolute: "Contact SOHO Architects — Calicut, Kerala",
+  },
   description:
-    "Tell us about your site, your timing, and what you'd like to make. We reply within three working days, always from a person.",
+    "Speak with SOHO Architects, an architecture and interior design firm in Calicut (Kozhikode), Kerala. Reply within three working days, always from a person.",
+  alternates: { canonical: "/inquiries" },
+  openGraph: {
+    title: "Contact — SOHO Architects, Calicut",
+    description:
+      "Tell us about your site, your timing, and what you&apos;d like to make. Architects in Calicut (Kozhikode), Kerala.",
+    url: "/inquiries",
+  },
 };
 
 export default function InquiriesPage() {
+  const breadcrumbs = breadcrumbsJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/inquiries" },
+  ]);
+
+  const contactPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact SOHO Architects — Calicut, Kerala",
+    url: absoluteUrl("/inquiries"),
+    mainEntity: { "@id": ORG_ID },
+  };
+
+  const mapEmbedUrl = process.env.NEXT_PUBLIC_GBP_EMBED_URL;
+
   return (
     <>
+      <JsonLd data={breadcrumbs} />
+      <JsonLd data={contactPageJsonLd} />
       <section className="pt-32 md:pt-44 pb-16 md:pb-20 border-b border-hairline">
         <Container>
           <Reveal>
@@ -46,6 +74,9 @@ export default function InquiriesPage() {
                     <li key={p.tel}>
                       <a
                         href={`tel:${p.tel}`}
+                        data-event="phone_click"
+                        data-event-source="inquiries_aside"
+                        data-event-value={p.tel}
                         className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors tabular-nums"
                       >
                         {p.display}
@@ -59,6 +90,8 @@ export default function InquiriesPage() {
                     <dd className="mt-1.5">
                       <a
                         href={`mailto:${STUDIO_EMAIL}`}
+                        data-event="email_click"
+                        data-event-source="inquiries_aside"
                         className="underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
                       >
                         {STUDIO_EMAIL}
@@ -84,6 +117,24 @@ export default function InquiriesPage() {
               </Reveal>
             </div>
           </div>
+
+          {mapEmbedUrl && (
+            <Reveal>
+              <div className="mt-16 md:mt-24 border-t border-hairline pt-12">
+                <span className="eyebrow">The studio · Malaparamba, Calicut</span>
+                <div className="mt-6 aspect-[16/9] md:aspect-[21/9] w-full overflow-hidden bg-surface border border-hairline">
+                  <iframe
+                    src={mapEmbedUrl}
+                    title="SOHO Architects studio location — Malaparamba, Kozhikode"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full h-full block"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            </Reveal>
+          )}
         </Container>
       </section>
     </>

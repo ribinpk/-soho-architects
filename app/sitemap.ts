@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { projectSlugsQuery } from "@/sanity/lib/queries";
+import {
+  insightsIndexQuery,
+  projectSlugsQuery,
+} from "@/sanity/lib/queries";
 
 const STATIC_ROUTES: Array<{
   path: string;
@@ -9,7 +12,24 @@ const STATIC_ROUTES: Array<{
 }> = [
   { path: "", changeFrequency: "monthly", priority: 1 },
   { path: "/projects", changeFrequency: "monthly", priority: 0.9 },
-  { path: "/studio", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/services", changeFrequency: "monthly", priority: 0.9 },
+  {
+    path: "/services/residential-architects-calicut",
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
+    path: "/services/commercial-architects-calicut",
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
+    path: "/services/interior-designers-calicut",
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  { path: "/studio", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/insights", changeFrequency: "weekly", priority: 0.8 },
   { path: "/inquiries", changeFrequency: "yearly", priority: 0.5 },
 ];
 
@@ -20,8 +40,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   let projectSlugs: { slug: string }[] = [];
+  let insightPosts: { slug: string; publishedAt?: string; updatedAt?: string }[] = [];
   try {
-    projectSlugs = await sanityFetch<{ slug: string }[]>(projectSlugsQuery);
+    [projectSlugs, insightPosts] = await Promise.all([
+      sanityFetch<{ slug: string }[]>(projectSlugsQuery),
+      sanityFetch<{ slug: string; publishedAt?: string; updatedAt?: string }[]>(
+        insightsIndexQuery,
+      ),
+    ]);
   } catch {
     /* no-op — sitemap still ships static routes */
   }
@@ -38,6 +64,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    ...insightPosts.map(({ slug, publishedAt, updatedAt }) => ({
+      url: `${base}/insights/${slug}`,
+      lastModified: updatedAt ? new Date(updatedAt) : publishedAt ? new Date(publishedAt) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
   ];
 }

@@ -73,6 +73,31 @@ export type StudioPageData = {
   seo?: { title?: string; description?: string; ogImage?: SanityImageRef };
 };
 
+export type InsightFaq = { q: string; a: string };
+
+export type InsightCardData = {
+  _id: string;
+  title: string;
+  slug: string;
+  publishedAt: string;
+  excerpt: string;
+  cover: SanityImageRef & { alt: string };
+  author: string;
+  readingMinutes?: number;
+};
+
+export type InsightDetail = InsightCardData & {
+  updatedAt?: string;
+  authorRole?: string;
+  body: PortableTextBlock[];
+  faqs?: InsightFaq[];
+  relatedProjects?: Array<
+    Pick<ProjectCardData, "_id" | "name" | "slug" | "location" | "cover">
+  >;
+  relatedServices?: string[];
+  seo?: { title?: string; description?: string; ogImage?: SanityImageRef };
+};
+
 export type SocialLink = { label: string; url: string };
 
 export type SiteSettings = {

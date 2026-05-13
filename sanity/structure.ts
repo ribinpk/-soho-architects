@@ -26,12 +26,15 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.documentTypeListItem("project").title("Projects"),
+      S.documentTypeListItem("insightPost").title("Insights"),
       S.divider(),
       S.documentTypeListItem("inquiry").title("Inquiries"),
       ...S.documentTypeListItems().filter(
         (item) =>
           item.getId() !== undefined &&
-          !["project", "inquiry", ...SINGLETONS].includes(item.getId() as string),
+          !["project", "insightPost", "inquiry", ...SINGLETONS].includes(
+            item.getId() as string,
+          ),
       ),
     ]);
 

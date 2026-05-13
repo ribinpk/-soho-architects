@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { Analytics, GtmNoScript } from "@/components/analytics/Analytics";
+import { professionalServiceJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const display = Fraunces({
@@ -22,16 +24,56 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SOHO Architects",
-    template: "%s — SOHO Architects",
+    default: "SOHO Architects — Architects in Calicut, Kerala",
+    template: "%s | SOHO Architects, Calicut",
   },
   description:
-    "An architecture and interiors practice on the Malabar coast. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
+    "SOHO Architects is an architecture and interior design firm in Calicut (Kozhikode), Kerala. Residential, commercial, and interior projects, founder-led since 2011.",
+  alternates: { canonical: "/" },
+  applicationName: "SOHO Architects",
+  keywords: [
+    "architects in Calicut",
+    "architects in Kozhikode",
+    "architecture firm Calicut",
+    "interior designers Calicut",
+    "residential architects Kerala",
+    "SOHO Architects",
+  ],
   openGraph: {
     siteName: "SOHO Architects",
     type: "website",
+    locale: "en_IN",
+    url: siteUrl,
+    title: "SOHO Architects — Architects in Calicut, Kerala",
+    description:
+      "Architecture and interior design firm in Calicut, Kerala. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: "SOHO Architects — Architects in Calicut, Kerala",
+    description:
+      "Architecture and interior design firm in Calicut, Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/brand/apple-touch-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION }
+      : undefined,
+  },
 };
 
 export const viewport: Viewport = {
@@ -66,24 +108,6 @@ const themeBootstrap = `
 })();
 `;
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "SOHO Architects",
-  url: siteUrl,
-  logo: `${siteUrl}/brand/logo.svg`,
-  description:
-    "An architecture and interiors practice in Kozhikode, Kerala — homes, workplaces, hospitality, interiors, and heritage projects.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Golf Link Road, Malaparamba",
-    addressLocality: "Kozhikode",
-    addressRegion: "Kerala",
-    postalCode: "673009",
-    addressCountry: "IN",
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -100,7 +124,9 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: themeBootstrap }}
         />
-        <JsonLd data={organizationJsonLd} />
+        <JsonLd data={professionalServiceJsonLd()} />
+        <Analytics />
+        <GtmNoScript />
         {children}
       </body>
     </html>

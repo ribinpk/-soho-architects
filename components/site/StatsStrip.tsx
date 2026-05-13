@@ -17,7 +17,7 @@ type Props = {
 
 const DEFAULTS: Stat[] = [
   { value: 15, label: "Years in practice" },
-  { value: 36, label: "Projects delivered" },
+  { value: 112, suffix: "+", label: "Projects delivered" },
   { value: 3, label: "States · India" },
   { value: 1, label: "Studio · Kozhikode" },
 ];

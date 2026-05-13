@@ -44,6 +44,9 @@ export function ContactFab() {
             rel="noopener noreferrer"
             aria-label="Chat with us on WhatsApp"
             data-cursor="view"
+            data-event="whatsapp_click"
+            data-event-source="fab"
+            data-event-value={WHATSAPP_PHONE.tel}
             className="press group relative flex items-center justify-center size-12 md:size-13 rounded-full bg-[#25D366] text-white shadow-[0_6px_18px_-4px_rgba(20,18,15,0.35)] hover:scale-[1.04] transition-transform"
             initial={prefersReducedMotion ? false : { scale: 0.85 }}
             animate={prefersReducedMotion ? {} : { scale: 1 }}
@@ -69,6 +72,9 @@ export function ContactFab() {
           <a
             href={telHref}
             aria-label={`Call ${STUDIO_PHONES[0].display}`}
+            data-event="phone_click"
+            data-event-source="fab"
+            data-event-value={STUDIO_PHONES[0].tel}
             className="press flex items-center justify-center size-12 md:size-13 rounded-full bg-ink text-cream shadow-[0_6px_18px_-4px_rgba(20,18,15,0.35)] hover:scale-[1.04] transition-transform"
           >
             <PhoneIcon className="w-5 h-5" />

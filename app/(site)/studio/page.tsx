@@ -5,9 +5,11 @@ import { PortableTextRenderer } from "@/components/sanity/PortableText";
 import { SanityImage } from "@/components/sanity/SanityImage";
 import { InquiryCta } from "@/components/site/InquiryCta";
 import { ProcessTimeline } from "@/components/site/ProcessTimeline";
+import { JsonLd } from "@/components/seo/JsonLd";
 import type { StudioPageData } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { studioPageQuery } from "@/sanity/lib/queries";
+import { absoluteUrl, breadcrumbsJsonLd, ORG_ID } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -63,10 +65,21 @@ const FALLBACK_PRESS: PressEntry[] = [
 export async function generateMetadata(): Promise<Metadata> {
   const data = await sanityFetch<StudioPageData | null>(studioPageQuery);
   return {
-    title: data?.seo?.title || "The Studio — SOHO Architects, Kozhikode",
+    title: {
+      absolute:
+        data?.seo?.title ||
+        "Best Architecture Firm in Calicut | SOHO Architects",
+    },
     description:
       data?.seo?.description ||
-      "Founded in Calicut in 2011. A small practice by choice — every project led by a founder, from the first conversation to the last site visit.",
+      "Founded in Calicut in 2011 by Suhail AK and Varun Gopal. A founder-led architecture firm in Kozhikode, recognised by IIA Kerala for residential and institutional work.",
+    alternates: { canonical: "/studio" },
+    openGraph: {
+      title: "The Studio — SOHO Architects, Calicut",
+      description:
+        "Founder-led architecture firm in Calicut (Kozhikode), Kerala. Founded 2011. Meet the partners, the process, and the studio.",
+      url: "/studio",
+    },
   };
 }
 
@@ -80,14 +93,33 @@ export default async function StudioPage() {
   const press: PressEntry[] =
     data?.press && data.press.length > 0 ? data.press : FALLBACK_PRESS;
 
+  const breadcrumbs = breadcrumbsJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Studio", path: "/studio" },
+  ]);
+
+  const aboutPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About SOHO Architects — The Studio",
+    url: absoluteUrl("/studio"),
+    mainEntity: { "@id": ORG_ID },
+  };
+
   return (
     <>
+      <JsonLd data={breadcrumbs} />
+      <JsonLd data={aboutPageJsonLd} />
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 border-b border-hairline">
         <Container>
           <Reveal>
-            <span className="eyebrow">The Studio · Kozhikode</span>
-            <p className="mt-8 font-serif text-display tracking-tight max-w-[20ch]">
+            <span className="eyebrow">The Studio · Calicut, Kerala</span>
+            <h1 className="mt-8 font-serif text-display tracking-tight max-w-[20ch]">
               {data?.introHeadline || FALLBACK_HEADLINE}
+            </h1>
+            <p className="mt-6 max-w-xl text-body-lg text-mute">
+              SOHO Architects — a founder-led architecture and interior
+              design firm in Calicut (Kozhikode), Kerala. Founded 2011.
             </p>
           </Reveal>
         </Container>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import {
   submitInquiry,
@@ -10,16 +11,34 @@ import {
   siteSecuredOptions,
   timelineOptions,
 } from "@/lib/inquiry/schema";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const initial: InquiryState = { status: "idle" };
 
 export function InquiryForm() {
   const [state, formAction] = useActionState(submitInquiry, initial);
+  const router = useRouter();
+  const navigatedRef = useRef(false);
+
+  useEffect(() => {
+    if (state.status !== "success" || navigatedRef.current) return;
+    navigatedRef.current = true;
+    track("contact_form_submit", {
+      form_name: "inquiry",
+      page_path:
+        typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
+    router.push("/thank-you");
+  }, [state.status, router]);
 
   if (state.status === "success") {
     return (
-      <div className="border border-hairline p-8 md:p-12 bg-paper">
+      <div
+        className="border border-hairline p-8 md:p-12 bg-paper"
+        role="status"
+        aria-live="polite"
+      >
         <span className="eyebrow">Sent</span>
         <p className="mt-4 font-serif text-2xl md:text-3xl tracking-tight max-w-[28ch]">
           {state.message}

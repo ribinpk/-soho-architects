@@ -10,6 +10,7 @@ import { StickyInquireCta } from "@/components/project/StickyInquireCta";
 import { InquiryCta } from "@/components/site/InquiryCta";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { TrackEvent } from "@/components/analytics/TrackEvent";
 import type { ProjectDetail, ProjectNavItem } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { urlForImage } from "@/sanity/lib/image";
@@ -18,6 +19,7 @@ import {
   projectNavQuery,
   projectSlugsQuery,
 } from "@/sanity/lib/queries";
+import { absoluteUrl, breadcrumbsJsonLd, ORG_ID } from "@/lib/seo";
 
 function ogImageUrl(project: ProjectDetail): string | undefined {
   if (!project.cover?.asset) return undefined;
@@ -58,18 +60,36 @@ export async function generateMetadata({
   const project = await getProject(slug);
   if (!project) return {};
   const og = ogImageUrl(project);
+  const city = project.location?.split(",")[0]?.trim();
+  const titleLocation = city
+    ? `${city}, Kerala`
+    : "Calicut, Kerala";
+  const defaultTitle = `${project.name} — Architect-Designed in ${titleLocation} | SOHO Architects`;
+  const defaultDescription = project.location
+    ? `${project.name} in ${project.location}. Designed by SOHO Architects, an architecture and interior design firm in Calicut, Kerala.`
+    : `${project.name}. Designed by SOHO Architects, an architecture firm in Calicut, Kerala.`;
+  const canonical = `/projects/${project.slug}`;
   return {
-    title: project.seo?.title || project.name,
-    description:
-      project.seo?.description ||
-      `${project.name} — ${project.location}. Designed by SOHO Architects.`,
+    title: { absolute: project.seo?.title || defaultTitle },
+    description: project.seo?.description || defaultDescription,
+    alternates: { canonical },
     openGraph: {
-      title: project.name,
+      title: project.seo?.title || `${project.name} — SOHO Architects, Calicut`,
+      description: project.seo?.description || defaultDescription,
       type: "article",
+      url: canonical,
       images: og
         ? [{ url: og, width: 1200, height: 630, alt: project.name }]
         : undefined,
     },
+    twitter: og
+      ? {
+          card: "summary_large_image",
+          title: project.seo?.title || `${project.name} — SOHO Architects, Calicut`,
+          description: project.seo?.description || defaultDescription,
+          images: [og],
+        }
+      : undefined,
   };
 }
 
@@ -90,27 +110,65 @@ export default async function ProjectPage({
   const prev = i > 0 ? nav[i - 1] : undefined;
   const next = i >= 0 && i < nav.length - 1 ? nav[i + 1] : undefined;
 
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "http://localhost:3000";
   const og = ogImageUrl(project);
+  const projectUrl = absoluteUrl(`/projects/${project.slug}`);
 
-  const jsonLd = {
+  const galleryImages = (project.gallery ?? [])
+    .map((img) => {
+      try {
+        return urlForImage(img).width(1600).url();
+      } catch {
+        return null;
+      }
+    })
+    .filter((u): u is string => Boolean(u));
+
+  const coverImageObject = og
+    ? {
+        "@type": "ImageObject",
+        contentUrl: og,
+        url: og,
+        caption: `${project.name} — ${project.location ?? "Kerala"}, designed by SOHO Architects`,
+        creator: { "@id": ORG_ID },
+        copyrightHolder: { "@id": ORG_ID },
+      }
+    : undefined;
+
+  const creativeWorkJsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.name,
-    url: `${siteUrl}/projects/${project.slug}`,
+    url: projectUrl,
     dateCreated: project.year ? String(project.year) : undefined,
     locationCreated: project.location
       ? { "@type": "Place", name: project.location }
       : undefined,
-    image: og,
-    creator: { "@type": "Organization", name: "SOHO Architects" },
+    image: coverImageObject,
+    associatedMedia: galleryImages.map((u) => ({
+      "@type": "ImageObject",
+      contentUrl: u,
+      url: u,
+      caption: `${project.name} — SOHO Architects, Calicut`,
+      creator: { "@id": ORG_ID },
+    })),
+    creator: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
   };
+
+  const breadcrumbs = breadcrumbsJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/projects" },
+    { name: project.name, path: `/projects/${project.slug}` },
+  ]);
 
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbs} />
+      <JsonLd data={creativeWorkJsonLd} />
+      <TrackEvent
+        name="portfolio_view"
+        params={{ slug: project.slug, name: project.name, location: project.location }}
+      />
       <ScrollProgress />
       <ProjectHero project={project} />
       <ProjectMeta project={project} />
