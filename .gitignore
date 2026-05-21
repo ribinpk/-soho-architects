@@ -47,3 +47,11 @@ next-env.d.ts
 /.sanity
 /sanity-import-cache
 STATUS.md
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
