@@ -23,5 +23,12 @@
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
+	},
+	"vars": {
+		"NEXT_PUBLIC_SANITY_PROJECT_ID": "aaqpdktf",
+		"NEXT_PUBLIC_SANITY_DATASET": "production",
+		"NEXT_PUBLIC_SANITY_API_VERSION": "2025-05-01",
+		"NEXT_PUBLIC_SITE_URL": "https://sohoarchitects.in",
+		"INQUIRY_RECIPIENT_EMAIL": "ribinpk@gmail.com"
 	}
 }
