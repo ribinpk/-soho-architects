@@ -29,6 +29,8 @@
 		"NEXT_PUBLIC_SANITY_DATASET": "production",
 		"NEXT_PUBLIC_SANITY_API_VERSION": "2025-05-01",
 		"NEXT_PUBLIC_SITE_URL": "https://sohoarchitects.in",
-		"INQUIRY_RECIPIENT_EMAIL": "ribinpk@gmail.com"
+		"INQUIRY_RECIPIENT_EMAIL": "ribinpk@gmail.com",
+		"NEXT_PUBLIC_GBP_EMBED_URL": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.54321904644954!2d75.80001719514996!3d11.28407261140798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65ea0ab1228e5%3A0x6ae2a6f77d91bbc5!2sSOHO%20Architects!5e0!3m2!1sen!2sbr!4v1779675633188!5m2!1sen!2sbr",
+		"NEXT_PUBLIC_GBP_MAP_URL": "https://www.google.com/maps?cid=7701901894650805189"
 	}
 }
