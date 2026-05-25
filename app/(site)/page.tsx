@@ -444,10 +444,10 @@ const HOME_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How long does it take to design and build a house in Kerala?",
-    a: "From the first conversation to handover, a typical SOHO house takes 18 to 30 months — roughly 4 to 6 months of design and drawings, the rest in construction. Larger or more complex projects take longer. We&apos;d rather move at the pace the building deserves than rush a draft.",
+    a: "From the first conversation to handover, a typical SOHO house takes 18 to 30 months — roughly 4 to 6 months of design and drawings, the rest in construction. Larger or more complex projects take longer. We'd rather move at the pace the building deserves than rush a draft.",
   },
   {
     q: "Do you work on small projects or interiors only?",
-    a: "Yes. About a third of the studio&apos;s work is interiors — homes already built that want resolving — or smaller renovations and additions. We&apos;re happy to start with a single room and stay through the rest of the house.",
+    a: "Yes. About a third of the studio's work is interiors — homes already built that want resolving — or smaller renovations and additions. We're happy to start with a single room and stay through the rest of the house.",
   },
 ];

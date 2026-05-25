@@ -1,8 +1,6 @@
 "use client";
 
-import { animate, useInView, useMotionValue, useTransform } from "motion/react";
-import { motion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   to: number;
@@ -15,26 +13,63 @@ type Props = {
 
 /**
  * Counts up from `to - span` to `to` when scrolled into view. Used for years,
- * stats, etc. Triggers once.
+ * stats, etc. Triggers once. Uses a native IntersectionObserver + rAF so the
+ * count reliably resolves even when nested inside a motion `whileInView` wrapper.
  */
 export function CountUp({ to, duration = 1.2, span = 12, className }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const count = useMotionValue(to - span);
-  const rounded = useTransform(count, (v) => Math.round(v).toString());
+  const from = to - span;
+  const [value, setValue] = useState(from);
 
   useEffect(() => {
-    if (!inView) return;
-    const controls = animate(count, to, {
-      duration,
-      ease: [0.16, 1, 0.3, 1],
-    });
-    return () => controls.stop();
-  }, [inView, count, to, duration]);
+    const node = ref.current;
+    if (!node) return;
+    let raf = 0;
+    let observer: IntersectionObserver | null = null;
+    let started = false;
+
+    const run = () => {
+      if (started) return;
+      started = true;
+      const startTime = performance.now();
+      const tick = (now: number) => {
+        const elapsed = Math.min((now - startTime) / (duration * 1000), 1);
+        // easeOutQuart — matches the motion ease the rest of the site uses
+        const eased = 1 - Math.pow(1 - elapsed, 4);
+        setValue(Math.round(from + (to - from) * eased));
+        if (elapsed < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+
+    if (typeof IntersectionObserver === "undefined") {
+      run();
+      return;
+    }
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            run();
+            observer?.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(node);
+
+    return () => {
+      observer?.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [to, from, duration]);
 
   return (
-    <motion.span ref={ref} className={className}>
-      {rounded}
-    </motion.span>
+    <span ref={ref} className={className}>
+      {value}
+    </span>
   );
 }

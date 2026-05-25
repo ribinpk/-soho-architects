@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact — SOHO Architects, Calicut",
     description:
-      "Tell us about your site, your timing, and what you&apos;d like to make. Architects in Calicut (Kozhikode), Kerala.",
+      "Tell us about your site, your timing, and what you'd like to make. Architects in Calicut (Kozhikode), Kerala.",
     url: "/inquiries",
   },
 };

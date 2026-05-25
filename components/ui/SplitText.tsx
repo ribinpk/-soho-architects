@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "motion/react";
-import type { ElementType } from "react";
+import { Fragment, type ElementType } from "react";
 
 type Props = {
   text: string;
@@ -58,20 +58,21 @@ export function SplitText({
         aria-label={text}
       >
         {words.map((w, i) => (
-          <span
-            key={i}
-            aria-hidden="true"
-            className="inline-block overflow-hidden align-baseline"
-            style={{ marginRight: i < words.length - 1 ? "0.25em" : 0 }}
-          >
-            <motion.span
-              className="inline-block"
-              variants={word}
-              style={{ willChange: "transform" }}
+          <Fragment key={i}>
+            <span
+              aria-hidden="true"
+              className="inline-block overflow-hidden align-baseline"
             >
-              {w}
-            </motion.span>
-          </span>
+              <motion.span
+                className="inline-block"
+                variants={word}
+                style={{ willChange: "transform" }}
+              >
+                {w}
+              </motion.span>
+            </span>
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
         ))}
       </motion.span>
     </Tag>
