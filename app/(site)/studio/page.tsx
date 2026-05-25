@@ -10,6 +10,7 @@ import type { StudioPageData } from "@/lib/types";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { studioPageQuery } from "@/sanity/lib/queries";
 import { absoluteUrl, breadcrumbsJsonLd, ORG_ID } from "@/lib/seo";
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export const revalidate = 60;
 
@@ -237,6 +238,55 @@ export default async function StudioPage() {
                 </div>
                 <span className="col-span-12 md:col-span-3 text-sm text-mute md:text-right">
                   {p.source}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      <section className="py-16 md:py-28 border-b border-hairline">
+        <Container>
+          <Reveal>
+            <div className="flex items-baseline justify-between">
+              <h2 className="font-serif text-headline">Elsewhere</h2>
+              <span className="hidden md:inline-block text-sm text-mute max-w-[28ch] text-right">
+                Where else the studio publishes — what to expect, and how often.
+              </span>
+            </div>
+          </Reveal>
+          <ul className="mt-10 border-t border-hairline">
+            {SOCIAL_LINKS.map((s) => (
+              <li
+                key={s.url}
+                className="border-b border-hairline py-5 grid grid-cols-12 gap-4 items-baseline"
+              >
+                <span className="col-span-3 md:col-span-1 eyebrow !text-mute">
+                  {s.cadence}
+                </span>
+                <div className="col-span-9 md:col-span-8">
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="me noopener noreferrer"
+                    data-event="social_click"
+                    data-event-source="studio_page"
+                    data-event-value={s.platform}
+                    className="press group inline-flex items-baseline gap-3 hover:text-mute transition-colors"
+                  >
+                    <span className="font-serif text-2xl md:text-[1.7rem] tracking-tight">
+                      {s.platform}
+                    </span>
+                    <span aria-hidden="true" className="text-mute text-sm">
+                      ↗
+                    </span>
+                  </a>
+                  <p className="mt-2 text-sm text-mute max-w-[48ch]">
+                    {s.description}
+                  </p>
+                </div>
+                <span className="col-span-12 md:col-span-3 text-sm text-mute md:text-right">
+                  {s.handle}
                 </span>
               </li>
             ))}

@@ -1,4 +1,5 @@
 import { STUDIO_ADDRESS, STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
+import { socialSameAs } from "@/lib/social";
 
 export function siteUrl(): string {
   return (
@@ -156,15 +157,6 @@ export function professionalServiceJsonLd() {
       "Heritage and adaptive reuse",
       "Climate-responsive design for Kerala",
     ],
-    sameAs: parseSameAs(process.env.NEXT_PUBLIC_SAMEAS),
+    sameAs: socialSameAs(),
   };
-}
-
-function parseSameAs(value: string | undefined): string[] | undefined {
-  if (!value) return undefined;
-  const list = value
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  return list.length > 0 ? list : undefined;
 }
