@@ -388,6 +388,94 @@ export default async function HomePage() {
         </Container>
       </section>
 
+      {/* Working with an architect — pre-FAQ consideration content.
+          Long-form prose that maps to the "how do I work with an architect
+          in Calicut" search intent, in studio voice. */}
+      <section className="py-20 md:py-28 border-b border-hairline">
+        <Container>
+          <div className="md:grid md:grid-cols-12 md:gap-12">
+            <div className="md:col-span-4">
+              <Reveal>
+                <span className="eyebrow">How we work</span>
+                <h2 className="mt-6 font-serif text-headline tracking-tight max-w-[16ch]">
+                  Working with an architect in Calicut.
+                </h2>
+              </Reveal>
+            </div>
+            <div className="md:col-span-7 md:col-start-6">
+              <Reveal delay={0.08}>
+                <div className="space-y-5 text-body-lg leading-relaxed max-w-[58ch]">
+                  <p>
+                    Most of our clients arrive with a plot, a budget that
+                    isn't yet fixed, and a sense that a house has to do more
+                    than fit on a drawing. The first meeting is unhurried —
+                    usually at our studio in Malaparamba, sometimes on the
+                    site itself if it's nearby. There's no presentation. We
+                    listen, ask, and try to understand what the place is
+                    asking for before any line is drawn.
+                  </p>
+                  <p>
+                    Design begins with a site visit and a measure. Light
+                    studies, soil notes, the trees worth keeping, the
+                    neighbour&apos;s wall that&apos;s already deciding part
+                    of your plan. A concept follows — usually within six to
+                    eight weeks. Schematic drawings, then design development,
+                    then the working set the contractor builds from. Each
+                    phase has a sign-off so we&apos;re moving forward with
+                    you, not ahead of you. A typical{" "}
+                    <Link
+                      href="/services/residential-architects-calicut"
+                      className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                    >
+                      residential project
+                    </Link>{" "}
+                    takes four to six months from first meeting to
+                    construction-ready drawings.
+                  </p>
+                  <p>
+                    Construction is supervised. We don&apos;t hand over a
+                    set of drawings and disappear. One of the partners is on
+                    site every fortnight at minimum, more often during finish
+                    stages. Material samples are reviewed in person. We work
+                    with a small group of contractors across Kozhikode,
+                    Malappuram, Kannur, and Wayanad who know how to build
+                    what we draw — which means fewer surprises and a build
+                    that holds its lines.
+                  </p>
+                  <p>
+                    Fees are a percentage of the build cost, set in writing
+                    at the first meeting before any work begins. We&apos;re
+                    happy to talk about budget early — the earlier the
+                    better. A site visit and the first conversation are
+                    always at no cost.
+                  </p>
+                </div>
+                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+                  <Link
+                    href="/inquiries"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Start a conversation →
+                  </Link>
+                  <Link
+                    href="/studio"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Meet the partners →
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    Houses we&apos;ve built in Kerala →
+                  </Link>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* FAQ — answers common queries from prospective clients in Calicut & Kerala.
           Plain HTML; FAQPage JSON-LD wired up in Phase 5. */}
       <section className="py-20 md:py-28 border-b border-hairline">

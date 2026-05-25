@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PortableTextRenderer } from "@/components/sanity/PortableText";
 import { CountUp } from "@/components/ui/CountUp";
 import type { ProjectDetail } from "@/lib/types";
 import { readingTimeMinutes } from "@/lib/utils";
+import { serviceFor } from "@/lib/project-services";
 
 const STATUS_LABEL: Record<string, string> = {
   completed: "Completed",
@@ -17,6 +19,7 @@ export function ProjectMeta({ project }: { project: ProjectDetail }) {
     project.designApproachBody,
     project.detailBody,
   );
+  const service = serviceFor(project.slug);
 
   return (
     <section className="border-b border-hairline">
@@ -61,6 +64,19 @@ export function ProjectMeta({ project }: { project: ProjectDetail }) {
                 <dt className="eyebrow">Location</dt>
                 <dd className="mt-2 text-sm leading-relaxed">
                   {project.location}
+                </dd>
+              </div>
+            )}
+            {service && (
+              <div className="col-span-2">
+                <dt className="eyebrow">Service</dt>
+                <dd className="mt-2 text-sm leading-relaxed">
+                  <Link
+                    href={service.href}
+                    className="press underline decoration-1 underline-offset-4 hover:text-mute transition-colors"
+                  >
+                    {service.anchor}
+                  </Link>
                 </dd>
               </div>
             )}

@@ -251,6 +251,61 @@ export default function ResidentialServicePage() {
         </Container>
       </section>
 
+      <section className="py-20 md:py-24 border-b border-hairline">
+        <Container>
+          <Reveal>
+            <span className="eyebrow">Also from the studio</span>
+          </Reveal>
+          <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-10">
+            <Reveal>
+              <Link
+                href="/services/commercial-architects-calicut"
+                className="press group block border-t border-hairline pt-6"
+              >
+                <span className="eyebrow !text-mute">Service</span>
+                <h3 className="mt-3 font-serif text-2xl md:text-3xl tracking-tight group-hover:text-mute transition-colors">
+                  Commercial architects in Calicut
+                </h3>
+                <p className="mt-3 text-sm text-mute max-w-[36ch]">
+                  Offices, small hotels, and institutional work — workspaces
+                  detailed for Kerala&apos;s climate.
+                </p>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <Link
+                href="/services/interior-designers-calicut"
+                className="press group block border-t border-hairline pt-6"
+              >
+                <span className="eyebrow !text-mute">Service</span>
+                <h3 className="mt-3 font-serif text-2xl md:text-3xl tracking-tight group-hover:text-mute transition-colors">
+                  Interior designers in Calicut
+                </h3>
+                <p className="mt-3 text-sm text-mute max-w-[36ch]">
+                  Interiors for houses already built — joinery, finishes, and
+                  rooms resolved properly.
+                </p>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <Link
+                href="/insights"
+                className="press group block border-t border-hairline pt-6"
+              >
+                <span className="eyebrow !text-mute">Writing</span>
+                <h3 className="mt-3 font-serif text-2xl md:text-3xl tracking-tight group-hover:text-mute transition-colors">
+                  Notes from the studio
+                </h3>
+                <p className="mt-3 text-sm text-mute max-w-[36ch]">
+                  On building in Kerala — cost, climate, materials, and what
+                  we have learned twenty houses in.
+                </p>
+              </Link>
+            </Reveal>
+          </div>
+        </Container>
+      </section>
+
       <InquiryCta
         eyebrow="Start a house"
         headline="Have a site in mind?"
