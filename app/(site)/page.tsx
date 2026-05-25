@@ -126,6 +126,7 @@ export default async function HomePage() {
                     alt={heroProject.cover?.alt || heroProject.name}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
+                    fetchPriority="high"
                     fill
                     className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02]"
                   />

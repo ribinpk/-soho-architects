@@ -99,12 +99,24 @@ export default async function StudioPage() {
     { name: "Studio", path: "/studio" },
   ]);
 
+  // Each team member becomes a Person entity tied to the Organisation.
+  // Helps Google build a knowledge graph around the founders (Suhail / Varun)
+  // and supports future Person-level rich results.
+  const teamForSchema =
+    team ?? FALLBACK_TEAM.map((m) => ({ name: m.name, role: m.role }));
+
   const aboutPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     name: "About SOHO Architects — The Studio",
     url: absoluteUrl("/studio"),
     mainEntity: { "@id": ORG_ID },
+    mentions: teamForSchema.map((member) => ({
+      "@type": "Person",
+      name: member.name,
+      jobTitle: member.role,
+      worksFor: { "@id": ORG_ID },
+    })),
   };
 
   return (

@@ -134,15 +134,36 @@ export default async function ProjectPage({
       }
     : undefined;
 
+  // Build a richer Place entity from the project's location string. All
+  // current projects are in Kerala, India — encode that explicitly so the
+  // CreativeWork is geo-anchored and reinforces the studio's local signal
+  // for Kerala-and-Calicut searches.
+  const locationCreated = project.location
+    ? (() => {
+        const parts = project.location
+          .split(",")
+          .map((p) => p.trim())
+          .filter(Boolean);
+        return {
+          "@type": "Place" as const,
+          name: project.location,
+          address: {
+            "@type": "PostalAddress" as const,
+            addressLocality: parts[0],
+            ...(parts.length > 1 ? { addressRegion: parts[parts.length - 1] } : { addressRegion: "Kerala" }),
+            addressCountry: "IN",
+          },
+        };
+      })()
+    : undefined;
+
   const creativeWorkJsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.name,
     url: projectUrl,
     dateCreated: project.year ? String(project.year) : undefined,
-    locationCreated: project.location
-      ? { "@type": "Place", name: project.location }
-      : undefined,
+    locationCreated,
     image: coverImageObject,
     associatedMedia: galleryImages.map((u) => ({
       "@type": "ImageObject",
