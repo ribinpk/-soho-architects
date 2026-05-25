@@ -3,7 +3,7 @@ import { STUDIO_ADDRESS, STUDIO_EMAIL, STUDIO_PHONES } from "@/lib/contact";
 export function siteUrl(): string {
   return (
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "http://localhost:3000"
+    "https://sohoarchitects.in"
   );
 }
 

@@ -19,16 +19,16 @@ const body = Inter({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sohoarchitects.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SOHO Architects — Architects in Calicut, Kerala",
+    default: "Architects in Calicut (Kozhikode), Kerala — SOHO Architects",
     template: "%s | SOHO Architects, Calicut",
   },
   description:
-    "SOHO Architects is an architecture and interior design firm in Calicut (Kozhikode), Kerala. Residential, commercial, and interior projects, founder-led since 2011.",
+    "SOHO Architects — an architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led residential, commercial, and interior projects across Malabar since 2011.",
   alternates: { canonical: "/" },
   applicationName: "SOHO Architects",
   keywords: [
@@ -44,15 +44,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     url: siteUrl,
-    title: "SOHO Architects — Architects in Calicut, Kerala",
+    title: "Architects in Calicut (Kozhikode), Kerala — SOHO Architects",
     description:
-      "Architecture and interior design firm in Calicut, Kerala. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
+      "Architecture and interior design firm in Calicut (Kozhikode), Kerala. Houses, workplaces, and quiet rooms — built slowly, drawn by hand where it matters.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SOHO Architects — Architects in Calicut, Kerala",
+    title: "Architects in Calicut (Kozhikode), Kerala — SOHO Architects",
     description:
-      "Architecture and interior design firm in Calicut, Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
+      "Architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
   },
   icons: {
     icon: "/favicon.ico",

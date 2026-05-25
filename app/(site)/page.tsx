@@ -17,13 +17,13 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Architects in Calicut, Kerala | SOHO Architects",
+    absolute: "Architects in Calicut (Kozhikode), Kerala — SOHO Architects",
   },
   description:
-    "SOHO Architects is an architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led residential, commercial, and interior projects since 2011.",
+    "SOHO Architects — an architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led residential, commercial, and interior projects across Malabar since 2011.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Architects in Calicut, Kerala | SOHO Architects",
+    title: "Architects in Calicut (Kozhikode), Kerala — SOHO Architects",
     description:
       "Architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
     url: "/",

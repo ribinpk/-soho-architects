@@ -36,7 +36,7 @@ const STATIC_ROUTES: Array<{
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "http://localhost:3000";
+    "https://sohoarchitects.in";
   const now = new Date();
 
   let projectSlugs: { slug: string }[] = [];
