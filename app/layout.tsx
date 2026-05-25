@@ -54,10 +54,6 @@ export const metadata: Metadata = {
     description:
       "Architecture and interior design firm in Calicut (Kozhikode), Kerala. Founder-led, climate-responsive, working across Kerala since 2011.",
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/brand/apple-touch-icon.png",
-  },
   robots: {
     index: true,
     follow: true,
