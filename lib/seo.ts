@@ -80,11 +80,12 @@ export const AREA_SERVED = [
   { "@type": "AdministrativeArea", name: "Kerala" },
 ];
 
-// Approximate coordinates for Golf Link Road, Malaparamba, Kozhikode.
-// Owner should verify against the studio's Google Business Profile pin.
+// Studio coordinates — verified against the Google Business Profile pin.
+// Keep these in sync if the GBP pin is ever moved; mismatch causes Google
+// to treat the schema and GBP listings as different entities.
 const STUDIO_GEO = {
-  latitude: 11.298,
-  longitude: 75.7958,
+  latitude: 11.284083132795944,
+  longitude: 75.80019086820452,
 };
 
 export function professionalServiceJsonLd() {
