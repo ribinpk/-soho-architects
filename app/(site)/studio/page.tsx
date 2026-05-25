@@ -17,8 +17,8 @@ const FALLBACK_HEADLINE = "SOHO Studio, Calicut";
 
 const FALLBACK_INTRO: string[] = [
   "SOHO began at a kitchen table in Calicut in 2011 — a small office, a home office, the two collapsed into one. The name stuck.",
-  "Fifteen years on, the studio is larger and the table is gone, but the premise hasn't moved. We make buildings that are answerable to their site, their climate, and the people who'll live in them. Most of our work is in Kerala, where the monsoon writes half the brief. Some of it is elsewhere. The principles don't change with the postcode.",
-  "We're a small studio by choice. Every project is led by one of the founders, from the first conversation to the last site visit.",
+  "Fifteen years on, the studio is larger and the table is gone, but the premise hasn't moved. We have delivered over a hundred and twelve projects since — houses, workplaces, interiors — across three Indian states, the bulk of them in Kerala, where the monsoon writes half the brief. The principles don't change with the postcode.",
+  "We remain a single studio in Kozhikode by choice. Every project is led personally by one of the founders, from the first conversation to the last site visit.",
 ];
 
 const FALLBACK_TEAM: {

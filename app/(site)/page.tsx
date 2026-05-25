@@ -5,7 +5,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { ProjectCard } from "@/components/site/ProjectCard";
 import { InquiryCta } from "@/components/site/InquiryCta";
-import { StatsStrip } from "@/components/site/StatsStrip";
 import { SanityImage } from "@/components/sanity/SanityImage";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { ProjectCardData } from "@/lib/types";
@@ -282,9 +281,6 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
-
-      {/* Stats — authority strip */}
-      <StatsStrip />
 
       {/* What we work on — gives the marquee a sentence each */}
       <section className="py-20 md:py-28 border-b border-hairline">
